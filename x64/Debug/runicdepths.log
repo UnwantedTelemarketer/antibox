@@ -1,0 +1,4 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1091,5): warning MSB8027: Two or more files with the name of glad.c will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Libraries\include\antibox\glad.c, Libraries\include\glad\glad.c.
+  main.cpp
+C:\dev\C++\runicdepths\main.cpp(29,1): warning C4312: 'type cast': conversion from 'uint32_t' to 'void *' of greater size
+  runicdepths.vcxproj -> C:\dev\C++\runicdepths\Debug\runicdepths.exe
