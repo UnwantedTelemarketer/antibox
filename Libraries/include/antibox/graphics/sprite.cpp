@@ -5,7 +5,9 @@
 
 namespace antibox 
 {
-	
+	Sprite::Sprite() {
+		Engine::Instance().AddToSprites(this);
+	}
 	void Sprite::CreateSprite() {
 		if (alreadyMade) { std::cout << "Already created this sprite!" << "\n"; return; }
 		float vertices[]
@@ -16,14 +18,13 @@ namespace antibox
 			-0.5f,  0.5f, 0.f
 		};
 		mMesh = std::make_shared<Mesh>(&vertices[0], 3, 3);
-		
+
 		mShader = std::make_shared<Shader>(defaultVert, defaultFrag);
 		mShader->SetUniformFloat3("color", 1, xColor, yColor);
 
 		mRectPos = glm::vec2(0.f);
 		mRectSize = glm::vec2(1.f);
 
-		Engine::Instance().AddToSprites(this);
 		alreadyMade = true;
 	}
 

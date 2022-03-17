@@ -9,9 +9,6 @@ public:
 	Sprite triangleSprite;
 	void Init() override 
 	{
-		triangleSprite.CreateSprite();
-		triangleSprite.CreateSprite();
-		triangleSprite.CreateSprite();
 	} 
 	void Update() override 
 	{

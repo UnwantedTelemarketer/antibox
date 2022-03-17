@@ -38,6 +38,10 @@ namespace antibox
 		if (mApp == nullptr) { mApp = app; }//If we dont have an app, set the private app to the one submitted from wherever run is called.
 		else { return; } //if there is no app anywhere, just dont run
 		Initialize(); //
+		for (int i = 0; i < sprites.size(); i++) //Update each sprite after the user wants to mess with it
+		{
+			sprites[i]->CreateSprite();
+		}
 		while (!glfwWindowShouldClose(window->glfwin())) //This is the window loop from GLFW.
 		{
 			Update(); //Run the Update function

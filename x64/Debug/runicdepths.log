@@ -1,4 +1,49 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1091,5): warning MSB8027: Two or more files with the name of glad.c will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Libraries\include\antibox\glad.c, Libraries\include\glad\glad.c.
+  engine.cpp
+  imguiwindow.cpp
+  window.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\window.cpp(53,13): warning C4305: 'return': truncation from 'int' to 'bool'
+  rendercommands.cpp
+  sprite.cpp
+  rendermanager.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\managers\rendermanager.cpp(61,69): warning C4244: 'argument': conversion from 'const T' to 'GLfloat', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\dev\C++\runicdepths\Libraries\include\antibox\managers\rendermanager.cpp(61,55): warning C4244: 'argument': conversion from 'const T' to 'GLfloat', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\dev\C++\runicdepths\Libraries\include\antibox\managers\rendermanager.cpp(61,41): warning C4244: 'argument': conversion from 'const T' to 'GLfloat', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\dev\C++\runicdepths\Libraries\include\antibox\managers\rendermanager.cpp(61,27): warning C4244: 'argument': conversion from 'const T' to 'GLfloat', possible loss of data
+          with
+          [
+              T=int
+          ]
   main.cpp
-C:\dev\C++\runicdepths\main.cpp(29,1): warning C4312: 'type cast': conversion from 'uint32_t' to 'void *' of greater size
+C:\dev\C++\runicdepths\main.cpp(26,1): warning C4312: 'type cast': conversion from 'uint32_t' to 'void *' of greater size
+  Generating Code...
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\window.cpp(72): warning C4715: 'antibox::Window::init': not all control paths return a value
+x64\Debug\glad.obj : warning LNK4042: object specified more than once; extras ignored
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(init.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(input.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(window.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_thread.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_thread.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
   runicdepths.vcxproj -> C:\dev\C++\runicdepths\Debug\runicdepths.exe

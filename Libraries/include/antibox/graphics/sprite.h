@@ -44,6 +44,6 @@ namespace antibox {
 		void UpdateSprite();
 		void RenderSprite();
 
-		Sprite() {}
+		Sprite();
 	};
 }
