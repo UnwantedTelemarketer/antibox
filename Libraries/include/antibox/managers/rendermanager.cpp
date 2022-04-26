@@ -80,8 +80,8 @@ namespace antibox
 			glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->GetFBO()); ANTIBOX_CHECK_GL_ERROR
 				SetViewport({ 0, 0, framebuffer->GetSize().x, framebuffer->GetSize().y });
 
-			glm::vec4 cc = framebuffer->GetClearColor();
-			glClearColor(cc.r,cc.g,cc.b,cc.a);
+			glm::ivec4 cc = framebuffer->GetClearColor();
+			glClearColor(cc.r, cc.g, cc.b,cc.a); //TODO this is why the background color wont change. not sure why the fb cc isnt working
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); ANTIBOX_CHECK_GL_ERROR
 		}
 

@@ -2,6 +2,8 @@
 #include "engine.h"
 #include "app.h"
 
+#define TO_CHARARR(number) std::to_string(number).c_str()
+
 
 //To be implemented in clients app
 //client returns pointer to instance of class derived from app
@@ -19,4 +21,9 @@ int main() {
 	engine.Run(app);
 	delete app;
 	return 0;
+}
+
+namespace Input {
+	//Returns true if the key is pressed, false if not.
+	inline int KeyDown(int keycode) { return glfwGetKey(antibox::Engine::Instance().GetWindow()->glfwin(), keycode); }
 }

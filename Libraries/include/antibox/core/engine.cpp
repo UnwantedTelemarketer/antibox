@@ -22,6 +22,8 @@ namespace antibox
 		window = new Window(window_w, window_h, "name");
 	}
 
+	
+
 	void Engine::Initialize() { //Do all the initialization
 		WindowProperties props = mApp->GetWindowProperties();
 		window->init(props);
@@ -30,18 +32,18 @@ namespace antibox
 		
 	}
 
-	void Engine::AddToSprites(Sprite* sp) {
-		sprites.push_back(sp);
-	}
+	//void Engine::AddToObjects(GameObject* go) {
+	//	gos.push_back(go);
+	//}
 
 	void Engine::Run(App* app) { //This is what loops forever until the window is closed
 		if (mApp == nullptr) { mApp = app; }//If we dont have an app, set the private app to the one submitted from wherever run is called.
 		else { return; } //if there is no app anywhere, just dont run
 		Initialize(); //
-		for (int i = 0; i < sprites.size(); i++) //Update each sprite after the user wants to mess with it
+		/*for (int i = 0; i < gos.size(); i++) //Update each sprite after the user wants to mess with it
 		{
-			sprites[i]->CreateSprite();
-		}
+			gos[i]->CreateSprite();
+		}*/
 		while (!glfwWindowShouldClose(window->glfwin())) //This is the window loop from GLFW.
 		{
 			Update(); //Run the Update function
@@ -61,20 +63,20 @@ namespace antibox
 			prevtime = crntTime; 	counter = 0;
 		}*/ //if you want the title to be the fps
 		mApp->Update(); //users update function
-		for (int i = 0; i < sprites.size(); i++) //Update each sprite after the user wants to mess with it
+		/*for (int i = 0; i < sprites.size(); i++) //Update each sprite after the user wants to mess with it
 		{
 			sprites[i]->UpdateSprite();
-		}
+		}*/
 	}
 
 	void Engine::Render() {
 		glfwPollEvents(); //Take in mouse and keyboard inputs
 		
 		mApp->Render(); //Users render function.
-		for (int i = 0; i < sprites.size(); i++) //Render each sprite added to screen
+		/*for (int i = 0; i < sprites.size(); i++) //Render each sprite added to screen
 		{
 			sprites[i]->RenderSprite();
-		}
+		}*/
 		window->EndRender(); //Window end render.
 	}
 

@@ -1,25 +1,131 @@
-#include "antibox/core/antibox.h"
+#include "Game.h"
 
-#include "antibox/graphics/framebuffer.h"
 using namespace antibox;
-class _NAME_ : public App {
+class Caves : public App {
 private:
-	
-public:
-	Sprite triangleSprite;
-	void Init() override 
-	{
-	} 
-	void Update() override 
-	{
+	WindowProperties GetWindowProperties() {
+		WindowProperties props;
+		props.w = 1280;
+		props.h = 720;
+		return props;
 	}
-	void Render() override 
-	{
-	} 
+public:
+	//UI stuff
+	bool statsOpen;
+	std::string openClose;
+	//Game Stuff
+	GameManager game;
+	NPC johnNpc = { 100, 15, "John" };
+	Player& player = game.mainPlayer;
+	float& health = game.mainPlayer.health;
+	Map& map = game.mainMap;
+
+	void Init() override {
+		health = 100.0f;
+		statsOpen = false;
+		openClose = "Open Stats";
+		game.Setup(10, 10);
+	}
+
 	void ImguiRender() override
 	{
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		ImGui::ShowDemoWindow();
+		//------Map-------
+		ImGui::Begin("Map");
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 30; j++) {
+				if(game.mainMap.testChunk.coords[i][j] == 0){ ImGui::Text("@"); ImGui::SameLine(); }
+				else if (game.mainMap.testChunk.coords[i][j] == 35) { ImGui::Text("#"); ImGui::SameLine(); }
+				else if (game.mainMap.testChunk.coords[i][j] == 2) { ImGui::TextColored(ImVec4(0,0,1,1),"~"); ImGui::SameLine(); }
+				else{ ImGui::Text("."); ImGui::SameLine(); }
+			}
+			ImGui::Text("");
+		}
+		if( ImGui::Button("up") ) { game.MovePlayer(MAP_UP); }
+		else if (ImGui::Button("down")) { game.MovePlayer(MAP_DOWN); }
+		else if (ImGui::Button("left")) { game.MovePlayer(MAP_LEFT); }
+		else if (ImGui::Button("right")) { game.MovePlayer(MAP_RIGHT); }
+		ImGui::End();
+		//------Action Log----
+		ImGui::Begin("Action Log");
+			for (int i = 0; i < game.actionLog.size(); i++)
+			{
+				ImGui::Text(game.actionLog[i].c_str());
+			}
+		ImGui::End();
+		//------Combat------
+		ImGui::Begin("Interact");
+		if (ImGui::Button(openClose.c_str())) {
+			statsOpen = !statsOpen;
+			openClose = statsOpen ? "Close Stats" : "Open Stats";
+		}
+		if (ImGui::Button("Attack")) {
+			game.AttemptAttack();
+		}
+		ImGui::End();
+		//------Stats------
+		if(statsOpen){
+			ImGui::Begin("Stats");
+				ImGui::Text("Health");
+				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, (ImVec4)ImColor::HSV(0.0f,1.0f, 1.0f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+				ImGui::ProgressBar(game.mainPlayer.health / 100, ImVec2(0.0f, 0.0f));
+				ImGui::PopStyleColor(2);
+
+				if (player.coveredIn == 1) {
+					ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(1.7f, 1.0f, 1.0f));
+					ImGui::Text("Soaked!");
+					ImGui::PopStyleColor(1);
+				}
+
+			ImGui::End();
+		}
+		//------NPC------
+		if (game.NearNPC()) {
+			ImGui::Begin("Current NPC");
+				ImGui::Text(johnNpc.name.c_str());
+				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, (ImVec4)ImColor::HSV(0.0f, 1.0f, 1.0f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+				ImGui::ProgressBar(johnNpc.health / 100, ImVec2(0.0f, 0.0f));
+				ImGui::PopStyleColor(2);
+				ImGui::Text("");
+				ImGui::Text("Howdy!");
+			ImGui::End();
+		}
+	}
+};
+
+/*class Pong : public App
+{
+private:
+	std::shared_ptr<GameObject> mLeftPaddle, mRightPaddle;
+public:
+	
+	WindowProperties GetWindowProperties() {
+		WindowProperties props;
+		props.cc = { 0.85f,0.15f,0.15f,1.f };
+		return props;
+	}
+
+	void Init() override 
+	{
+		mLeftPaddle = factory::CreatePaddle({ -0.85f, 0.f });
+		mRightPaddle = factory::CreatePaddle({ 0.85f, 0.f });
+	}
+	void Update() override 
+	{
+		mLeftPaddle->Update();
+		mRightPaddle->Update();
+	}
+	void Render() override 
+	{
+		mLeftPaddle->Render();
+		mRightPaddle->Render();
+	}
+	void ImguiRender() override
+	{
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		if (ImGui::Begin("Game View"))
 		{
 			auto& window = *Engine::Instance().GetWindow();
@@ -27,11 +133,11 @@ public:
 		}
 		ImGui::End();
 	}
-	void Shutdown() override 
-	{
+	void Shutdown() override {
+
 	}
-};
+};*/
 
 antibox::App* CreateApp() {
-	return new _NAME_();
+	return new Caves();
 }

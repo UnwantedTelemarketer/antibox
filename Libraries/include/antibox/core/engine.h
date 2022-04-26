@@ -1,6 +1,9 @@
 #pragma once
 #include "window.h"
 #include "../managers/rendermanager.h"
+#include "antibox/graphics/framebuffer.h"
+#include "antibox/graphics/helpers.h"
+#include "antibox/core/mathlib.h"
 
 
 //================================================================================================================================================
@@ -23,7 +26,8 @@ namespace antibox {
 		
 		void End(); //Called when window is closed
 		//void EndShader();
-		void AddToSprites(Sprite* sp);
+		//void AddToObjects(GameObject* go);
+
 		void Run(App* app); //The constant loop every frame
 		inline App& GetApp() { return *mApp; } //Returns App
 		Window* GetWindow() { return window; } //Returns Window
@@ -36,7 +40,7 @@ namespace antibox {
 		static Engine* mInstance; //Local reference to the engine singleton
 
 		render::RenderManager mRenderManager; //RenderManager takes in Render Commands for rendering
-		std::vector<Sprite*> sprites; //This is an array of sprites so everytime you make a new one, it adds it to here to be updated and rendered.
+		//std::vector<GameObject*> gos; //This is an array of gameobjects so everytime you make a new one, it adds it to here to be updated and rendered.
 
 		double prevtime = 0.0; //all of this is for counting framerate if people want
 		double crntTime = 0.0; 
