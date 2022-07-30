@@ -2,6 +2,11 @@
 #include "antibox/core/antibox.h"
 #include "antibox/managers/factory.h"
 
+#define MAP_UP 1
+#define MAP_DOWN 2
+#define MAP_LEFT 3
+#define MAP_RIGHT 4
+
 struct Player {
 	float health = 0;
 	std::string name = "Blank";
@@ -23,11 +28,12 @@ struct NPC {
 class Map {
 public:
 	Chunk testChunk;
+	Chunk originalChunk; //keeps the original generated map so that tiles walked over wont randomize
 
 	void MovePlayer(int x, int y, Player* p, std::vector<std::string>* actionLog) {
 		p->xCoord = x; p->yCoord = y;
-		if (testChunk.coords[y][x] == 2) { p->coveredIn = 1; Math::PushBackLog(actionLog, "You are now wet."); }
-		BuildMap(*p); 
+		if (originalChunk.coords[y][x] == 2) { p->coveredIn = 1; Math::PushBackLog(actionLog, "You are now wet."); }
+		RebuildMap(*p); 
 	}
 	bool NearNPC(Player p) {
 		//check around player
@@ -40,13 +46,26 @@ public:
 		return false;
 	}
 
-	void BuildMap(Player p) {
+	void BuildInitialMap(Player p) {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 30; j++) {
-				if(i == p.yCoord && j == p.xCoord){ testChunk.coords[i][j] = 0; }
-				else if (i < 7 && j < 7) { testChunk.coords[i][j] = 2; }
-				else if (i == 12 && j == 7) { testChunk.coords[i][j] = 35; }
-				else { testChunk.coords[i][j] = 1; }
+				int currentTile = Math::RandNum(10);
+				//if (i == p.yCoord && j == p.xCoord) { originalChunk.coords[i][j] = 0; }
+				if (currentTile > 8) { originalChunk.coords[i][j] = 3; }
+				else if (currentTile > 6) { originalChunk.coords[i][j] = 2; }
+				else if (i == 7 && j == 7) { originalChunk.coords[i][j] = 35; }
+				else { originalChunk.coords[i][j] = 1; }
+				testChunk.coords[i][j] = originalChunk.coords[i][j];
+			}
+		}
+		testChunk.coords[p.yCoord][p.xCoord] = 0;
+	}
+
+	void RebuildMap(Player p) {
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 30; j++) {
+				testChunk.coords[i][j] = originalChunk.coords[i][j];
+				if (i == p.yCoord && j == p.xCoord) { testChunk.coords[i][j] = 0; }
 			}
 		}
 	}
@@ -64,7 +83,7 @@ public:
 	void Setup(int x, int y) {
 		mainPlayer.xCoord = x;
 		mainPlayer.yCoord = y;
-		mainMap.BuildMap(mainPlayer);
+		mainMap.BuildInitialMap(mainPlayer);
 	}
 
 	void AttemptAttack() {
@@ -101,9 +120,9 @@ public:
 		return mainMap.NearNPC(mainPlayer);
 	}
 
-	void SpawnEnemy(NPC curNPC) {
-		curNPC.health = Math::RandNum(100);
-		curNPC.damage = Math::RandNum(25);
-		curNPC.name = Math::RandString(possibleNames);
+	void SpawnEnemy(NPC* curNPC) {
+		curNPC->health = Math::RandNum(100);
+		curNPC->damage = Math::RandNum(25);
+		curNPC->name = Math::RandString(possibleNames);
 	}
 };

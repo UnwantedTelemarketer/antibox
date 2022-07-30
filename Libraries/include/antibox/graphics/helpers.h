@@ -13,12 +13,11 @@ namespace antibox
 
 #define ANTIBOX_CHECK_GL_ERROR CheckGLError();
 
-#define MAP_UP 1
-#define MAP_DOWN 2
-#define MAP_LEFT 3
-#define MAP_RIGHT 4
-//KEYCODES (just so end users dont need to use glfw)
+#define MOUSE_LEFT 0
+#define MOUSE_RIGHT 1
+#define MOUSE_MIDDLE 2
 
+//KEYCODES (just so end users dont need to use glfw)
 /* The unknown key */
 #define KEY_UNKNOWN            -1
 

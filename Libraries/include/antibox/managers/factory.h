@@ -39,7 +39,7 @@ namespace factory
 			}
 		)";
 
-	std::shared_ptr<antibox::GameObject> CreatePaddle(const glm::vec2& pos)
+	std::shared_ptr<antibox::GameObject> CreateSprite(const glm::vec2& pos)
 	{
 		std::shared_ptr<antibox::Mesh> mesh = std::make_shared<antibox::Mesh>(&Vertices[0], 3, 3);
 		std::shared_ptr<antibox::Shader> shader = std::make_shared<antibox::Shader>(DefaultVert, DefaultFrag);

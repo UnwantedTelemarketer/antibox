@@ -4,7 +4,7 @@
 
 namespace Math{
 	//Input the max number, and this will return a float between 1 and your max (inclusive).
-	inline float RandNum(int max) { srand(time(NULL)); return (rand() % max + 1); } //kinda gross to look at, but its just getting a random seed and returning the float
+	inline float RandNum(int max) { return (rand() % max + 1); } //kinda gross to look at, but its just getting a random seed and returning the float
 
 	//Returns a random string from a vector of strings.
 	inline std::string RandString(std::vector<std::string> list) { return list[rand() % (list.size()-1) + 1]; } //also bad to look at, but i dont want to make a multiline function in a header

@@ -91,4 +91,18 @@ namespace antibox
 	Engine::~Engine() {
 		delete window;
 	}
+
+	/*Console::Console() {
+
+	}
+	Console::~Console() {
+
+	}
+
+	Console& Console::Instance() {
+		if (!mIO) {
+			mIO = new Console();
+		}
+		return *mIO;
+	}*/
 }

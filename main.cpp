@@ -25,27 +25,41 @@ public:
 		statsOpen = false;
 		openClose = "Open Stats";
 		game.Setup(10, 10);
+		game.SpawnEnemy(&johnNpc);
 	}
 
 	void ImguiRender() override
 	{
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-		ImGui::ShowDemoWindow();
 		//------Map-------
 		ImGui::Begin("Map");
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 30; j++) {
-				if(game.mainMap.testChunk.coords[i][j] == 0){ ImGui::Text("@"); ImGui::SameLine(); }
-				else if (game.mainMap.testChunk.coords[i][j] == 35) { ImGui::Text("#"); ImGui::SameLine(); }
-				else if (game.mainMap.testChunk.coords[i][j] == 2) { ImGui::TextColored(ImVec4(0,0,1,1),"~"); ImGui::SameLine(); }
-				else{ ImGui::Text("."); ImGui::SameLine(); }
+				switch (game.mainMap.testChunk.coords[i][j]) {
+				case 0:
+					ImGui::Text("@");
+					break;
+				case 2:
+					ImGui::TextColored(ImVec4(0, 0, 1, 1), "~");
+					break;
+				case 3:
+					ImGui::TextColored(ImVec4(1, 0, 1, 1), "*");
+					break;
+				case 35:
+					ImGui::Text("#");
+					break;
+				default:
+					ImGui::Text(".");
+					break;
+				}
+				ImGui::SameLine();
 			}
 			ImGui::Text("");
 		}
-		if( ImGui::Button("up") ) { game.MovePlayer(MAP_UP); }
-		else if (ImGui::Button("down")) { game.MovePlayer(MAP_DOWN); }
-		else if (ImGui::Button("left")) { game.MovePlayer(MAP_LEFT); }
-		else if (ImGui::Button("right")) { game.MovePlayer(MAP_RIGHT); }
+		if(Input::KeyDown(KEY_UP)) { game.MovePlayer(MAP_UP); }
+		else if (Input::KeyDown(KEY_DOWN)) { game.MovePlayer(MAP_DOWN); }
+		else if (Input::KeyDown(KEY_LEFT)) { game.MovePlayer(MAP_LEFT); }
+		else if (Input::KeyDown(KEY_RIGHT)) { game.MovePlayer(MAP_RIGHT); }
 		ImGui::End();
 		//------Action Log----
 		ImGui::Begin("Action Log");
@@ -96,7 +110,7 @@ public:
 	}
 };
 
-/*class Pong : public App
+class Pong : public App
 {
 private:
 	std::shared_ptr<GameObject> mLeftPaddle, mRightPaddle;
@@ -110,8 +124,8 @@ public:
 
 	void Init() override 
 	{
-		mLeftPaddle = factory::CreatePaddle({ -0.85f, 0.f });
-		mRightPaddle = factory::CreatePaddle({ 0.85f, 0.f });
+		mLeftPaddle = factory::CreateSprite({ -0.85f, 0.f });
+		mRightPaddle = factory::CreateSprite({ 0.85f, 0.f });
 	}
 	void Update() override 
 	{
@@ -128,15 +142,14 @@ public:
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		if (ImGui::Begin("Game View"))
 		{
-			auto& window = *Engine::Instance().GetWindow();
-			ImGui::Image((void*)window.GetFramebuffer()->GetTextureID(), { ImGui::GetWindowSize().x , ImGui::GetWindowSize().y });
+			PRINTSCREEN;
 		}
 		ImGui::End();
 	}
 	void Shutdown() override {
 
 	}
-};*/
+};
 
 antibox::App* CreateApp() {
 	return new Caves();

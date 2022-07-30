@@ -168,6 +168,7 @@
     <ClCompile Include="Libraries\include\antibox\graphics\mesh.cpp" />
     <ClCompile Include="Libraries\include\antibox\graphics\sprite.cpp" />
     <ClCompile Include="Libraries\include\antibox\managers\rendermanager.cpp" />
+    <ClCompile Include="Libraries\include\antibox\objects\gameobject.cpp" />
     <ClCompile Include="Libraries\include\glad\glad.c" />
     <ClCompile Include="Libraries\include\glm\detail\glm.cpp" />
     <ClCompile Include="Libraries\include\imgui\imgui.cpp" />
@@ -179,14 +180,15 @@
     <ClCompile Include="Libraries\include\imgui\imgui_tables.cpp" />
     <ClCompile Include="Libraries\include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Libraries\include\antibox\core\app.h" />
     <ClInclude Include="Libraries\include\antibox\core\engine.h" />
     <ClInclude Include="Libraries\include\antibox\core\imguiwindow.h" />
     <ClInclude Include="Libraries\include\antibox\core\antibox.h" />
     <ClInclude Include="Libraries\include\antibox\core\log.h" />
+    <ClInclude Include="Libraries\include\antibox\core\mathlib.h" />
     <ClInclude Include="Libraries\include\antibox\core\window.h" />
     <ClInclude Include="Libraries\include\antibox\glad.h" />
     <ClInclude Include="Libraries\include\antibox\graphics\framebuffer.h" />
@@ -195,7 +197,9 @@
     <ClInclude Include="Libraries\include\antibox\graphics\shader.h" />
     <ClInclude Include="Libraries\include\antibox\graphics\mesh.h" />
     <ClInclude Include="Libraries\include\antibox\graphics\sprite.h" />
+    <ClInclude Include="Libraries\include\antibox\managers\factory.h" />
     <ClInclude Include="Libraries\include\antibox\managers\rendermanager.h" />
+    <ClInclude Include="Libraries\include\antibox\objects\gameobject.h" />
     <ClInclude Include="Libraries\include\glad\glad.h" />
     <ClInclude Include="Libraries\include\glm\common.hpp" />
     <ClInclude Include="Libraries\include\glm\detail\compute_common.hpp" />
@@ -579,7 +583,6 @@
     <ClInclude Include="Libraries\include\sdl2\SDL_video.h" />
     <ClInclude Include="Libraries\include\sdl2\SDL_vulkan.h" />
     <ClInclude Include="Libraries\include\stb\stb_image.h" />
-    <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\include\antibox\core\default.frag" />

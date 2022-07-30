@@ -7,6 +7,7 @@
 
 
 //================================================================================================================================================
+//#define REPEATER antibox::Engine::Instance().repeater
 //#define END_WINDOW_SHADER(window, shader, shad) shader.Delete(); shad.Delete(); glfwDestroyWindow(window); glfwTerminate(); //Closes the window and destroys it
 //#define DEFAULT_FRAMEBUFFER(program) glBindFramebuffer(GL_FRAMEBUFFER, 0); program.Activate(); glBindVertexArray(rectVAO); glDisable(GL_DEPTH_TEST); glBindTexture(GL_TEXTURE_2D, fbTex); glDrawArrays(GL_TRIANGLES, 0, 6); // idk at this point
 //#define READ_FROM_FILE(currChunkIDS, k, s) std::string xs = std::to_string(k); std::string ys = std::to_string(s); std::ifstream input_file("saves/worlds/chunks/" + (xs + ys)); while (input_file.get(byte)){ currChunkIDS.push_back(parseChartoInt(byte));}
@@ -19,6 +20,8 @@ namespace antibox {
 	public:
 		unsigned int window_w, window_h; //Window height and width
 		Window* window; //Reference to the window
+
+		bool repeater = 0; //Flag used to see if a key is held down
 
 		static Engine& Instance(); //Singleton for engine
 		~Engine(); //Destructor
@@ -51,4 +54,19 @@ namespace antibox {
 		void Render();
 		void Initialize();
 	};
+
+	/*class Console {
+	public:
+		static Console& Instance();
+		Console();
+		~Console(); //Destructor
+
+		//Logs a message to the console.
+		void Log(std::string message) { consoleLog.push_back(message); }
+		//Returns the log
+		std::vector<std::string> GetLog() { return consoleLog; } 
+	private:
+		static Console* mIO;
+		std::vector<std::string> consoleLog;
+	};*/
 }
