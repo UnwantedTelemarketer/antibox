@@ -12,12 +12,18 @@ namespace antibox
 	{
 		void RenderManager::Init()
 		{
+			/*
 			glEnable(GL_DEPTH_TEST); ANTIBOX_CHECK_GL_ERROR
 			glEnable(GL_CULL_FACE); ANTIBOX_CHECK_GL_ERROR
 			glCullFace(GL_FRONT); ANTIBOX_CHECK_GL_ERROR
-			glFrontFace(GL_CCW); ANTIBOX_CHECK_GL_ERROR
+			//glFrontFace(GL_CW); ANTIBOX_CHECK_GL_ERROR
+			*/
+			glEnable(GL_DEPTH_TEST); 
+			glDepthFunc(GL_LEQUAL);
+
+			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); ANTIBOX_CHECK_GL_ERROR // look this up
-				SetClearColor({ 0.25f, 0.25f, 0.25f, 1.f });
+			SetClearColor({ 0.25f, 0.25f, 0.25f, 1.f });
 		}
 
 		void RenderManager::Clear() 
@@ -80,7 +86,7 @@ namespace antibox
 			glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->GetFBO()); ANTIBOX_CHECK_GL_ERROR
 				SetViewport({ 0, 0, framebuffer->GetSize().x, framebuffer->GetSize().y });
 
-			glm::ivec4 cc = framebuffer->GetClearColor();
+			glm::vec4 cc = framebuffer->GetClearColor();
 			glClearColor(cc.r, cc.g, cc.b,cc.a); //TODO this is why the background color wont change. not sure why the fb cc isnt working
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); ANTIBOX_CHECK_GL_ERROR
 		}

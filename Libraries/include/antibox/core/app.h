@@ -5,6 +5,7 @@ namespace antibox
 	class App 
 	{
 	public:
+
 		App() {}
 		~App() {}
 		
@@ -19,6 +20,5 @@ namespace antibox
 		virtual void ImguiRender() {} //This is called to render ImGui.
 
 	private:
-		
 	};
 }

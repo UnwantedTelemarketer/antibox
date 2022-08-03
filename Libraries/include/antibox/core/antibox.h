@@ -1,6 +1,7 @@
 #pragma once
 #include "engine.h"
 #include "app.h"
+#include <iostream>
 
 //PRINTSCREEN creates an auto reference to the current window (screen) and displays the framebuffer that it gets onto an ImGui Image tab.
 #define PRINTSCREEN auto& window = *Engine::Instance().GetWindow(); ImGui::Image((void*)window.GetFramebuffer()->GetTextureID(), { ImGui::GetWindowSize().x , ImGui::GetWindowSize().y });
@@ -29,8 +30,41 @@ int main() {
 
 namespace Input {
 
-	//Returns true if the key is pressed, false if not.
-	int KeyDown(int keycode) { return glfwGetKey(antibox::Engine::Instance().GetWindow()->glfwin(), keycode); }
-	//Returns true if the mouse button is pressed, false if not.
-	int MouseButtonDown(int mouseButton) { return glfwGetMouseButton(antibox::Engine::Instance().GetWindow()->glfwin(), mouseButton); }
+	//Returns true if the key is held, false if not.
+	bool KeyHeldDown(int keycode) { return glfwGetKey(antibox::Engine::Instance().GetWindow()->glfwin(), keycode); }
+
+
+	//Returns true if the mouse button is held, false if not.
+	bool MouseButtonHeld(int mouseButton) { return glfwGetMouseButton(antibox::Engine::Instance().GetWindow()->glfwin(), mouseButton); }
+
+	//Returns true if the key is pressed once, false if not.
+	bool KeyDown(int keycode) {
+		int state = glfwGetKey(antibox::Engine::Instance().GetWindow()->glfwin(), keycode); //glfw getting mouse down
+		if (state == GLFW_PRESS && !KD_FLAG) {
+			KD_CODE = keycode;
+			KD_FLAG = true;
+			return true;
+		}
+		else if (state == GLFW_RELEASE && KD_FLAG) {
+			if (KD_CODE != keycode) { return false; }
+			KD_FLAG = false;
+			return false;
+		}
+		return false;
+	}
+	//Returns true if the mouse button is pressed once, false if not.
+	bool MouseButtonDown(int mouseButton) {
+		int state = glfwGetMouseButton(antibox::Engine::Instance().GetWindow()->glfwin(), mouseButton); //glfw getting mouse down
+		if (state == GLFW_PRESS && !MD_FLAG) {
+			MD_FLAG = true;
+			return true;
+		}
+		else if (state == GLFW_RELEASE && MD_FLAG) {
+			MD_FLAG = false;
+			return false;
+		}
+		return false;
+	}
+
 }
+

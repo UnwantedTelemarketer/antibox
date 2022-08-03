@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#define CURRENTWINDOW Engine::Instance().GetWindow()->glfwin()
 using namespace antibox;
 class Caves : public App {
 private:
@@ -26,6 +26,20 @@ public:
 		openClose = "Open Stats";
 		game.Setup(10, 10);
 		game.SpawnEnemy(&johnNpc);
+	}
+	void Update() {
+		if (Input::KeyDown(KEY_UP)) {
+			game.MovePlayer(MAP_UP);
+		}
+		else if (Input::KeyDown(KEY_DOWN)) {
+			game.MovePlayer(MAP_DOWN);
+		}
+		else if (Input::KeyDown(KEY_LEFT)) {
+			game.MovePlayer(MAP_LEFT);
+		}
+		else if (Input::KeyDown(KEY_RIGHT)) {
+			game.MovePlayer(MAP_RIGHT);
+		}
 	}
 
 	void ImguiRender() override
@@ -56,10 +70,6 @@ public:
 			}
 			ImGui::Text("");
 		}
-		if(Input::KeyDown(KEY_UP)) { game.MovePlayer(MAP_UP); }
-		else if (Input::KeyDown(KEY_DOWN)) { game.MovePlayer(MAP_DOWN); }
-		else if (Input::KeyDown(KEY_LEFT)) { game.MovePlayer(MAP_LEFT); }
-		else if (Input::KeyDown(KEY_RIGHT)) { game.MovePlayer(MAP_RIGHT); }
 		ImGui::End();
 		//------Action Log----
 		ImGui::Begin("Action Log");
@@ -113,29 +123,37 @@ public:
 class Pong : public App
 {
 private:
-	std::shared_ptr<GameObject> mLeftPaddle, mRightPaddle;
+	std::shared_ptr<GameObject> cookie;
+	double mouseX, mouseY;
 public:
-	
 	WindowProperties GetWindowProperties() {
 		WindowProperties props;
-		props.cc = { 0.85f,0.15f,0.15f,1.f };
+		props.cc = { 0.2f,0.2f,0.2f,1.f };
+		props.w = 800;
+		props.h = 600;
 		return props;
 	}
+	int halfWidth = GetWindowProperties().w / 2;
+	int halfHeight = GetWindowProperties().h / 2;
 
 	void Init() override 
 	{
-		mLeftPaddle = factory::CreateSprite({ -0.85f, 0.f });
-		mRightPaddle = factory::CreateSprite({ 0.85f, 0.f });
+		cookie = Factory::CreateSprite({ 0,0 });
 	}
 	void Update() override 
 	{
-		mLeftPaddle->Update();
-		mRightPaddle->Update();
+		/*if (Input::MouseButtonDown(MOUSE_LEFT)) {
+			glfwGetCursorPos(CURRENTWINDOW, &mouseX, &mouseY);
+			mouseX = (mouseX - halfWidth) / halfWidth;
+			mouseY = (mouseY - halfHeight) / halfHeight;
+			Console::Log(std::to_string(mouseX), text::green);
+			Console::Log(std::to_string(mouseY), text::red);
+		}*/
+		cookie->Update();
 	}
 	void Render() override 
 	{
-		mLeftPaddle->Render();
-		mRightPaddle->Render();
+		cookie->Render();
 	}
 	void ImguiRender() override
 	{
@@ -152,5 +170,5 @@ public:
 };
 
 antibox::App* CreateApp() {
-	return new Caves();
+	return new Pong();
 }

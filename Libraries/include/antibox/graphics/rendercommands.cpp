@@ -29,12 +29,12 @@ namespace antibox
 				}
 
 
-				mesh->Unbind();
 				shader->Unbind();
+				mesh->Unbind();
 			}
 			else
 			{
-				ANTIBOX_ERROR("Executing RenderMesh with invalid data");
+				ANTIBOX_QLOG("Executing RenderMesh with invalid data");
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace antibox
 			}
 			else
 			{
-				ANTIBOX_ERROR("Tried to push framebuffer with invalid data");
+				ANTIBOX_QLOG("Tried to push framebuffer with invalid data");
 			}
 		}
 		void PopFramebuffer::Execute()

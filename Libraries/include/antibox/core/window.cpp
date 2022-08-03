@@ -43,7 +43,7 @@ namespace antibox {
 		glfwSwapBuffers(win);
 	}
 
-	bool Window::init(const WindowProperties& props) { // making a new opengl window LOL
+	bool Window::init(const WindowProperties& props) { // Window Properties
 		// Create a glfw window object of width by height pixels, naming it whatever the window name is
 		Window::win = glfwCreateWindow(props.w, props.h, props.title.c_str(), NULL, NULL);
 		// Error check if the window fails to create
@@ -62,9 +62,9 @@ namespace antibox {
 		glViewport(0, 0, width, height);
 
 		Engine::Instance().GetRenderManager().SetClearColor(props.cc);
-		
+
 		mFramebuffer = std::make_shared<Framebuffer>(props.w, props.h);
-		mFramebuffer->SetClearColor(props.cc);
+		mFramebuffer->SetClearColor(props.cc); // props.cc
 
 		mImguiWindow.Create(props.imguiProps);
 		

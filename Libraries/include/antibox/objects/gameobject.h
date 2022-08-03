@@ -15,15 +15,18 @@ namespace antibox
 		{}
 
 		void SetPos(const glm::vec2& pos) { mPos = pos; }
+		//void SetColor(const glm::vec4 color) { }
 		void Move(const glm::vec2& distance) { mPos += distance; }
 
 		const glm::vec2& GetPos() const { return mPos; }
 		const glm::vec2& GetSize() const { return mSize; }
+		std::string GetName() { return mName; }
 
 		void Update() {};
 		void Render();
 
 	private:
+		std::string mName;
 		std::shared_ptr<Mesh> mMesh;
 		std::shared_ptr<Shader> mShader;
 		glm::vec2 mPos, mSize;

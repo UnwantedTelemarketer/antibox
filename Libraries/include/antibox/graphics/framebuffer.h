@@ -14,8 +14,8 @@ namespace antibox
 		inline uint32_t GetTextureID() const { return mTextureId; }
 		inline uint32_t GetRenderbufferID() const { return mRenderbufferId; }
 		inline const glm::ivec2& GetSize() { return mSize; }
-		inline void SetClearColor(const glm::ivec4& cc) { mClearColour = cc; }
-		inline const glm::ivec4& GetClearColor() { return mClearColour; }
+		inline void SetClearColor(const glm::vec4 cc) { mClearColour = cc; }
+		inline const glm::vec4& GetClearColor() { return mClearColour; }
 
 	private:
 		uint32_t mFbo;
@@ -23,6 +23,6 @@ namespace antibox
 		uint32_t mRenderbufferId;
 
 		glm::ivec2 mSize;
-		glm::ivec4 mClearColour;
+		glm::vec4 mClearColour;
 	};
 }

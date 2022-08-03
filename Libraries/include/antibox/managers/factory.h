@@ -1,14 +1,14 @@
 #pragma once
 
 #include <memory>
-#include "../objects/gameobject.h"
+#include "../objects/scene.h"
 
-namespace factory 
+namespace Factory 
 {
 	static float Vertices[]
 	{
-		0.5f,  0.5f, 0.f,
-		0.5f, -0.5f, 0.f,
+		 0.5f,  0.5f, 0.f,
+		 0.5f, -0.5f, 0.f,
 		-0.5f, -0.5f, 0.f,
 		-0.5f,  0.5f, 0.f
 	};
@@ -41,10 +41,10 @@ namespace factory
 
 	std::shared_ptr<antibox::GameObject> CreateSprite(const glm::vec2& pos)
 	{
-		std::shared_ptr<antibox::Mesh> mesh = std::make_shared<antibox::Mesh>(&Vertices[0], 3, 3);
+		std::shared_ptr<antibox::Mesh> mesh = std::make_shared<antibox::Mesh>(&Vertices[0], 4, 3, &Elements[0], 6);
 		std::shared_ptr<antibox::Shader> shader = std::make_shared<antibox::Shader>(DefaultVert, DefaultFrag);
 
-		glm::vec2 size{ 0.1,0.3 };
+		glm::vec2 size{ 0.5,0.5 };
 		auto ret = std::make_shared<antibox::GameObject>(mesh, shader, pos, size);
 		return ret;
 	}

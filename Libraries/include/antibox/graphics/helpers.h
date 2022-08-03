@@ -1,15 +1,30 @@
 #pragma once
-
-#include "../core/log.h"
+#ifndef HELPERS
 
 #include "glad/glad.h"
 #include <string>
+#include "../core/log.h"
 
 namespace antibox
 {
 	void CheckGLError();
 }
 
+namespace text {
+	const color blue = "\033[0;34m";
+	const color red = "\033[1;31m";
+	const color green = "\033[1;32m";
+	const color yellow = "\033[0;33m";
+	const color white = "\033[0;37m";
+	const color black = "\033[0;30m";
+	const color purple = "\033[0;35m";
+	const color cyan = "\033[0;36m";
+}
+
+#define ERROR text::red
+#define LOG text::white
+#define SUCCESS text::green
+#define WARNING text::yellow
 
 #define ANTIBOX_CHECK_GL_ERROR CheckGLError();
 
@@ -146,3 +161,7 @@ namespace antibox
 #define KEY_MENU               348
 
 #define KEY_LAST               KEY_MENU
+
+
+
+#endif // HELPERS

@@ -11,12 +11,13 @@
 namespace antibox {
 
 	class Framebuffer;
-	struct WindowProperties //Window Properties is how you edit width, height, title, and background color as well as editing ImGui Properties.
+	//Window Properties is how you edit width, height, title, and background color as well as editing ImGui Properties.
+	struct WindowProperties
 	{
 		ImguiWindowProperties imguiProps;
 		std::string title; // Title of the window.
 		int w, h; //Width and height of the window.
-		glm::ivec4 cc;
+		glm::vec4 cc; //Background Clear Color.
 
 		WindowProperties();
 	};
@@ -44,7 +45,7 @@ namespace antibox {
 		const char* windowName;
 		ImguiWindow mImguiWindow;
 
-		std::shared_ptr <Framebuffer> mFramebuffer;
+		std::shared_ptr<Framebuffer> mFramebuffer;
 	};
 }
 #endif // !WINDOW_CLASS_H
