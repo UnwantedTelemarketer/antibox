@@ -1,5 +1,51 @@
-﻿  main.cpp
+﻿  engine.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+  imguiwindow.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+  window.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\window.cpp(53,13): warning C4305: 'return': truncation from 'int' to 'bool'
+  framebuffer.cpp
+  helpers.cpp
+  mesh.cpp
+  rendercommands.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+  shader.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\graphics\shader.cpp(14,7): warning C4101: 'compileStatus': unreferenced local variable
+  sprite.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+  texture.cpp
+  rendermanager.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\dev\C++\runicdepths\Libraries\include\antibox\managers\rendermanager.cpp(67,69): warning C4244: 'argument': conversion from 'const T' to 'GLfloat', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\dev\C++\runicdepths\Libraries\include\antibox\managers\rendermanager.cpp(67,55): warning C4244: 'argument': conversion from 'const T' to 'GLfloat', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\dev\C++\runicdepths\Libraries\include\antibox\managers\rendermanager.cpp(67,41): warning C4244: 'argument': conversion from 'const T' to 'GLfloat', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\dev\C++\runicdepths\Libraries\include\antibox\managers\rendermanager.cpp(67,27): warning C4244: 'argument': conversion from 'const T' to 'GLfloat', possible loss of data
+          with
+          [
+              T=int
+          ]
+  gameobject.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+  scene.cpp
+  main.cpp
 C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
 C:\dev\C++\runicdepths\Game.h(52,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\dev\C++\runicdepths\main.cpp(165,1): warning C4312: 'type cast': conversion from 'uint32_t' to 'void *' of greater size
+C:\dev\C++\runicdepths\main.cpp(218,1): warning C4312: 'type cast': conversion from 'uint32_t' to 'void *' of greater size
+  Generating Code...
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\window.cpp(72): warning C4715: 'antibox::Window::init': not all control paths return a value
+  glad.c
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\dev\C++\runicdepths\Debug\glfw3.pdb'; linking object as if no debug info
   runicdepths.vcxproj -> C:\dev\C++\runicdepths\Debug\runicdepths.exe

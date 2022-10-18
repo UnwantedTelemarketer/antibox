@@ -62,6 +62,7 @@ namespace antibox
 			std::string winTitle = "Antibox || " + FPS + "fps || " + ms + "ms"; 	glfwSetWindowTitle(window->glfwin(), winTitle.c_str());
 			prevtime = crntTime; 	counter = 0;
 		}*/ //if you want the title to be the fps
+		srand(Math::RandInt(1000));
 		mApp->Update(); //users update function
 		/*for (int i = 0; i < sprites.size(); i++) //Update each sprite after the user wants to mess with it
 		{

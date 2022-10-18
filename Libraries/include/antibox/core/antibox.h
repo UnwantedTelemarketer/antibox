@@ -8,6 +8,8 @@
 
 #define TO_CHARARR(number) std::to_string(number).c_str()
 
+#define MISSING_TEXTURE "Libraries/include/antibox/core/res/missing.png"
+
 
 //To be implemented in clients app
 //client returns pointer to instance of class derived from app

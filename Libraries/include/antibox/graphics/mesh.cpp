@@ -36,6 +36,23 @@ namespace antibox{
 		glBindVertexArray(0); ANTIBOX_CHECK_GL_ERROR
 	}
 
+	Mesh::Mesh(float* vertexArray, uint32_t vertexCount, uint32_t dimensions, float* texCoords, uint32_t* elementArray, uint32_t elementCount)
+		: Mesh(vertexArray, vertexCount, dimensions, elementArray, elementCount)
+	{
+		glBindVertexArray(mVao); ANTIBOX_CHECK_GL_ERROR
+
+		glGenBuffers(1, &mTextCoordsVbo); ANTIBOX_CHECK_GL_ERROR
+		glBindBuffer(GL_ARRAY_BUFFER, mTextCoordsVbo); ANTIBOX_CHECK_GL_ERROR
+		glBufferData(GL_ARRAY_BUFFER, vertexCount * 2 * sizeof(float), texCoords, GL_STATIC_DRAW); ANTIBOX_CHECK_GL_ERROR
+
+		glEnableVertexAttribArray(1); ANTIBOX_CHECK_GL_ERROR
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0); ANTIBOX_CHECK_GL_ERROR
+		//glDisableVertexAttribArray(0); ANTIBOX_CHECK_GL_ERROR
+		glBindBuffer(GL_ARRAY_BUFFER, 0); ANTIBOX_CHECK_GL_ERROR
+
+		glBindVertexArray(0); ANTIBOX_CHECK_GL_ERROR
+	}
+
 	Mesh::~Mesh() {
 		glDeleteBuffers(1, &mPositionVbo); ANTIBOX_CHECK_GL_ERROR
 			if (mEbo != 0) {

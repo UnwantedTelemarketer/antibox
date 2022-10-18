@@ -159,16 +159,18 @@
   <ItemGroup>
     <ClCompile Include="Libraries\include\antibox\core\engine.cpp" />
     <ClCompile Include="Libraries\include\antibox\core\imguiwindow.cpp" />
+    <ClCompile Include="Libraries\include\antibox\core\log.cpp" />
     <ClCompile Include="Libraries\include\antibox\core\window.cpp" />
-    <ClCompile Include="Libraries\include\antibox\glad.c" />
     <ClCompile Include="Libraries\include\antibox\graphics\framebuffer.cpp" />
     <ClCompile Include="Libraries\include\antibox\graphics\helpers.cpp" />
     <ClCompile Include="Libraries\include\antibox\graphics\rendercommands.cpp" />
     <ClCompile Include="Libraries\include\antibox\graphics\shader.cpp" />
     <ClCompile Include="Libraries\include\antibox\graphics\mesh.cpp" />
+    <ClCompile Include="Libraries\include\antibox\graphics\texture.cpp" />
     <ClCompile Include="Libraries\include\antibox\graphics\sprite.cpp" />
     <ClCompile Include="Libraries\include\antibox\managers\rendermanager.cpp" />
     <ClCompile Include="Libraries\include\antibox\objects\gameobject.cpp" />
+    <ClCompile Include="Libraries\include\antibox\objects\scene.cpp" />
     <ClCompile Include="Libraries\include\glad\glad.c" />
     <ClCompile Include="Libraries\include\glm\detail\glm.cpp" />
     <ClCompile Include="Libraries\include\imgui\imgui.cpp" />
@@ -197,9 +199,11 @@
     <ClInclude Include="Libraries\include\antibox\graphics\shader.h" />
     <ClInclude Include="Libraries\include\antibox\graphics\mesh.h" />
     <ClInclude Include="Libraries\include\antibox\graphics\sprite.h" />
+    <ClInclude Include="Libraries\include\antibox\graphics\texture.h" />
     <ClInclude Include="Libraries\include\antibox\managers\factory.h" />
     <ClInclude Include="Libraries\include\antibox\managers\rendermanager.h" />
     <ClInclude Include="Libraries\include\antibox\objects\gameobject.h" />
+    <ClInclude Include="Libraries\include\antibox\objects\scene.h" />
     <ClInclude Include="Libraries\include\glad\glad.h" />
     <ClInclude Include="Libraries\include\glm\common.hpp" />
     <ClInclude Include="Libraries\include\glm\detail\compute_common.hpp" />

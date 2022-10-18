@@ -32,6 +32,8 @@ namespace text {
 #define MOUSE_RIGHT 1
 #define MOUSE_MIDDLE 2
 
+#define CHAR_ARRAY(input) std::to_string(input).c_str() 
+
 //KEYCODES (just so end users dont need to use glfw)
 /* The unknown key */
 #define KEY_UNKNOWN            -1

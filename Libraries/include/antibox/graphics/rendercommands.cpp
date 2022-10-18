@@ -4,6 +4,7 @@
 #include "helpers.h"
 #include "shader.h"
 #include "mesh.h"
+#include "texture.h"
 #include "framebuffer.h" 
 
 namespace antibox 
@@ -53,6 +54,38 @@ namespace antibox
 		void PopFramebuffer::Execute()
 		{
 			Engine::Instance().GetRenderManager().PopFramebuffer();
+		}
+
+
+		void RenderMeshTextured::Execute()
+		{
+			std::shared_ptr<Mesh> mesh = mMesh.lock();
+			std::shared_ptr<Texture> texture = mTexture.lock();
+			std::shared_ptr<Shader> shader = mShader.lock();
+			if (mesh && shader)
+			{
+				mesh->Bind();
+				texture->Bind();
+				shader->Bind();
+
+				if (mesh->GetElementCount() > 0)
+				{
+					glDrawElements(GL_TRIANGLES, mesh->GetElementCount(), GL_UNSIGNED_INT, 0); ANTIBOX_CHECK_GL_ERROR
+				}
+				else
+				{
+					glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh->GetVertexCount()); ANTIBOX_CHECK_GL_ERROR
+				}
+
+
+				shader->Unbind();
+				texture->Unbind();
+				mesh->Unbind();
+			}
+			else
+			{
+				ANTIBOX_QLOG("Executing RenderMesh with invalid data");
+			}
 		}
 	}
 
