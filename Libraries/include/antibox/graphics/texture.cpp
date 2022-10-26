@@ -17,9 +17,8 @@ namespace antibox
 		, mFilter(TextureFilter::Linear)
 	{
 		int width, height, numChannels;
-		//Gives us an array of bytes for the pixel data
 		mPixels = stbi_load(path.c_str(), &width, &height, &numChannels, 0);
-		if (mPixels) 
+		if (mPixels)
 		{
 			mWidth = (uint32_t)width;
 			mHeight = (uint32_t)height;
@@ -38,6 +37,7 @@ namespace antibox
 	void Texture::Bind()
 	{
 		//Bind a texture with the ID
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mId);
 	}
 
@@ -74,12 +74,13 @@ namespace antibox
 		if (mPixels && dataFormat != 0)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, dataFormat, mWidth, mHeight, 0, dataFormat, GL_UNSIGNED_BYTE, mPixels);
+
 			SetTextureFilter(mFilter);
 			Console::Log(("Loaded texture from " + mPath + "."), text::green);
 		}
 		else 
 		{
-			float missingPixels[] = {
+			float pixels[] = {
 				1.f, 0.f, 1.f,		1.f, 1.f, 1.f,
 				1.f, 1.f, 1.f,		1.f, 0.f, 1.f,
 			};
@@ -88,7 +89,7 @@ namespace antibox
 			mHeight = 2;
 			mNumChannels = 3;
 
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_FLOAT, missingPixels);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_FLOAT, pixels);
 			SetTextureFilter(TextureFilter::Nearest);
 			Console::Log("Unable to load " + mPath + ". Loading default checkerboard texture. ", text::red);
 		}
@@ -99,6 +100,7 @@ namespace antibox
 	void Texture::SetTextureFilter(TextureFilter filter)
 	{
 		mFilter = filter;
+
 		glBindTexture(GL_TEXTURE_2D, mId);
 		switch (mFilter)
 		{

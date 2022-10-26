@@ -122,12 +122,14 @@ public:
 	}
 };
 
-class Pong : public App
+class Tanks : public App
 {
 private:
 	std::shared_ptr<GameObject> cookie;
 	double mouseX, mouseY;
 	std::shared_ptr<Texture> mTex;
+	std::shared_ptr<antibox::Mesh> mMesh;
+	std::shared_ptr<antibox::Shader> mShader;
 
 public:
 	WindowProperties GetWindowProperties() {
@@ -141,67 +143,33 @@ public:
 
 	void Init() override 
 	{
-		static float Vertices[]
-		{
-			 0.5f,  0.5f, 0.f,
-			 0.5f, -0.5f, 0.f,
-			-0.5f, -0.5f, 0.f,
-			-0.5f,  0.5f, 0.f
-		};
 
-		static uint32_t Elements[]
-		{
-			0, 3, 1,
-			1, 3, 2
-		};
-
-		static float texcoords[]
-		{
-			1.f, 1.f,
-			1.f, 0.f,
-			0.f, 0.f,
-			0.f, 1.f,
-		};
-
-		static const char* DefaultVert = R"(
-			#version 410 core
-			layout (location = 0) in vec3 position;
-			layout (location = 1) in vec2 texcoords;
-			uniform mat4 model = mat4(1.0);
-			out vec2 uvs;
-
-			void main()
-			{
-				uvs = texcoords;
-				gl_Position = model * vec4(position,1.0);
-			}
-		)";
-
-		static const char* DefaultFrag = R"(
-			#version 410 core
-			out vec4 outColor;
-			in vec2 uvs;
-
-			uniform sampler2D tex;
-			void main()
-			{
-				//outColor = vec4(1.0);
-				outColor = texture(tex, uvs);
-			}
-		)";
-
-		mTex = std::make_shared<Texture>("res/none");
-		std::shared_ptr<antibox::Mesh> mesh = std::make_shared<antibox::Mesh>(&Vertices[0], 4, 3, &Elements[0], 6);
-		std::shared_ptr<antibox::Shader> shader = std::make_shared<antibox::Shader>(DefaultVert, DefaultFrag);
-
-		glm::vec2 size{ 0.5,0.5 };
+		glm::vec2 size{ 0.5f,0.5f };
 		glm::vec2 pos{ 0.f,0.f };
-		cookie = std::make_shared<antibox::GameObject>(mesh, shader, pos, size, mTex);
 		
+		//mTex = std::make_shared<Texture>("nothing");
+
+		cookie = Factory::CreateSprite(pos);
 	}
 
 	void Update() override 
 	{
+		if (Input::KeyDown(KEY_I)) 
+		{
+			cookie->Move({ 0.0f, -0.1f });
+		}
+		else if (Input::KeyDown(KEY_K))
+		{
+			cookie->Move({ 0.0f, 0.1f });
+		}
+		else if (Input::KeyDown(KEY_J))
+		{
+			cookie->Move({ -0.1f, 0.0f });
+		}
+		else if (Input::KeyDown(KEY_L))
+		{
+			cookie->Move({ 0.1f, 0.0f });
+		}
 		cookie->Update();
 	}
 
@@ -274,5 +242,5 @@ class DND : public App{
 };
 
 antibox::App* CreateApp() {
-	return new Pong();
+	return new Tanks();
 }

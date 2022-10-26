@@ -62,7 +62,7 @@ namespace antibox
 			std::shared_ptr<Mesh> mesh = mMesh.lock();
 			std::shared_ptr<Texture> texture = mTexture.lock();
 			std::shared_ptr<Shader> shader = mShader.lock();
-			if (mesh && shader)
+			if (mesh && texture && shader)
 			{
 				mesh->Bind();
 				texture->Bind();

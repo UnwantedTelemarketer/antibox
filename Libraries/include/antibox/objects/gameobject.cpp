@@ -7,6 +7,6 @@ void antibox::GameObject::Render()
 	model = glm::translate(model, { mPos.x, mPos.y, 0.f });
 	model = glm::scale(model, { mSize.x, mSize.y, 1.f });
 	mShader->SetUniformMat4("model", model);
-	auto rc = std::make_unique<render::RenderMeshTextured>(mMesh, mTexture, mShader);
+	auto rc = std::make_unique<render::RenderMesh>(mMesh, mShader);
 	antibox::Engine::Instance().GetRenderManager().Submit(std::move(rc));
 }

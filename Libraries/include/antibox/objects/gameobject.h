@@ -7,12 +7,12 @@ namespace antibox
 {
 	class GameObject {
 	public:
-		GameObject(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> shader, const glm::vec2& pos, const glm::vec2& size, std::shared_ptr<Texture> tex)
+		GameObject(std::shared_ptr<Mesh> mesh, std::shared_ptr<Shader> shader, const glm::vec2& pos, const glm::vec2& size)//, std::weak_ptr<Texture> tex)
 			: mMesh(mesh)
 			, mShader(shader)
 			, mPos(pos)
 			, mSize(size)
-			, mTexture(move(tex))
+			//, mTexture(tex)
 		{}
 
 		void SetPos(const glm::vec2& pos) { mPos = pos; }
@@ -30,7 +30,7 @@ namespace antibox
 		std::string mName;
 		std::shared_ptr<Mesh> mMesh;
 		std::shared_ptr<Shader> mShader;
-		std::shared_ptr<Texture> mTexture;
+		//std::shared_ptr<Texture> mTexture;
 		glm::vec2 mPos, mSize;
 	};
 }

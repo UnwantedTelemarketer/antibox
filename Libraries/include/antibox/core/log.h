@@ -5,6 +5,8 @@ typedef const char color[8];
 namespace Console {
 	//Logs a message to the command prompt. ERROR is red, WARNING is yellow, SUCCESS is green, LOG is white.
 	void Log(std::string message, color type);
+	void Log(uint32_t message, color type);
+	void Log(unsigned char* message, color type);
 	//Writes a message and returns the message as a string. ERROR is red, WARNING is yellow, SUCCESS is green, LOG is white.
 	//std::string LogOut(std::string message, int type);
 }
