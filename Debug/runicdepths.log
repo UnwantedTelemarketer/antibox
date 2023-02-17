@@ -1,0 +1,17 @@
+﻿  main.cpp
+main.obj : error LNK2019: unresolved external symbol _glfwTerminate referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwDestroyWindow referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwWindowShouldClose referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwSetWindowTitle referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwPollEvents referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwGetTime referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwSwapBuffers referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "public: __thiscall Camera::Camera(int,int,struct glm::vec<3,float,0>)" (??0Camera@@QAE@HHU?$vec@$02M$0A@@glm@@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "public: void __thiscall Camera::updateMatrix(float,float,float)" (?updateMatrix@Camera@@QAEXMMM@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "public: void __thiscall Camera::Inputs(struct GLFWwindow *)" (?Inputs@Camera@@QAEXPAUGLFWwindow@@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "public: __thiscall Window::Window(unsigned int,unsigned int,char const *)" (??0Window@@QAE@IIPBD@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "public: bool __thiscall Window::init(void)" (?init@Window@@QAE_NXZ) referenced in function _main
+main.obj : error LNK2001: unresolved external symbol _glad_glClear
+main.obj : error LNK2001: unresolved external symbol _glad_glClearColor
+C:\dev\runicdepths\Libraries\lib\glfw3.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\dev\runicdepths\Debug\runicdepths.exe : fatal error LNK1120: 14 unresolved externals

@@ -1,0 +1,31 @@
+﻿  engine.cpp
+  imguiwindow.cpp
+  window.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\window.cpp(43,13): warning C4305: 'return': truncation from 'int' to 'bool'
+  camera.cpp
+  EBO.cpp
+  framebuffer.cpp
+  shaderClass.cpp
+  stb.cpp
+  texture.cpp
+  VAO.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\graphics\VAO.cpp(13,63): warning C4244: 'argument': conversion from 'GLsizeiptr' to 'GLsizei', possible loss of data
+  VBO.cpp
+  mesh.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\objs\mesh.cpp(110,66): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\dev\C++\runicdepths\Libraries\include\antibox\objs\mesh.cpp(114,87): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  model.cpp
+C:\dev\C++\runicdepths\Libraries\include\antibox\objs\model.cpp(265,94): warning C4267: 'argument': conversion from 'size_t' to 'GLuint', possible loss of data
+C:\dev\C++\runicdepths\Libraries\include\antibox\objs\model.cpp(273,96): warning C4267: 'argument': conversion from 'size_t' to 'GLuint', possible loss of data
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_glfw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Compiling...
+  main.cpp
+  player.cpp
+  glad.c
+LINK : fatal error LNK1181: cannot open input file 'glfw3.lib'
