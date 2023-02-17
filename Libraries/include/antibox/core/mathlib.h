@@ -2,6 +2,7 @@
 #include <random>
 
 
+
 namespace Math{
 	//Input the max number, and this will return a float between 1 and your max (inclusive).
 	inline float RandNum(int max) { return (rand() % max + 1); } //kinda gross to look at, but its just getting a random seed and returning the float
@@ -17,4 +18,5 @@ namespace Math{
 		if (log->size() <= 15) { log->push_back(message); }
 		else { log->erase(log->begin()); log->push_back(message); }
 	}
+
 }

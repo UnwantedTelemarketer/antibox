@@ -1,5 +1,5 @@
 ﻿  main.cpp
-C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(7,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(8,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
 C:\dev\C++\runicdepths\Game.h(52,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\dev\C++\runicdepths\main.cpp(186,1): warning C4312: 'type cast': conversion from 'uint32_t' to 'void *' of greater size
   runicdepths.vcxproj -> C:\dev\C++\runicdepths\Debug\runicdepths.exe

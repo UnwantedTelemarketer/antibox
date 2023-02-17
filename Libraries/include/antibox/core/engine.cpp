@@ -29,7 +29,6 @@ namespace antibox
 		window->init(props);
 		mRenderManager.Init();
 		mApp->Init();
-		
 	}
 
 	//void Engine::AddToObjects(GameObject* go) {

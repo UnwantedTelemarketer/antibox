@@ -58,19 +58,4 @@ namespace antibox {
 		void Render();
 		void Initialize();
 	};
-
-	/*class Console {
-	public:
-		static Console& Instance();
-		Console();
-		~Console(); //Destructor
-
-		//Logs a message to the console.
-		void Log(std::string message) { consoleLog.push_back(message); }
-		//Returns the log
-		std::vector<std::string> GetLog() { return consoleLog; } 
-	private:
-		static Console* mIO;
-		std::vector<std::string> consoleLog;
-	};*/
 }

@@ -147,28 +147,28 @@ public:
 		glm::vec2 size{ 0.5f,0.5f };
 		glm::vec2 pos{ 0.f,0.f };
 		
-		//mTex = std::make_shared<Texture>("nothing");
+		mTex = std::make_shared<Texture>("nothing");
 
 		cookie = Factory::CreateSprite(pos);
 	}
 
 	void Update() override 
 	{
-		if (Input::KeyDown(KEY_I)) 
+		if (Input::KeyHeldDown(KEY_W)) 
 		{
-			cookie->Move({ 0.0f, -0.1f });
+			cookie->Move({ 0.0f, -0.025f });
 		}
-		else if (Input::KeyDown(KEY_K))
+		if (Input::KeyHeldDown(KEY_S))
 		{
-			cookie->Move({ 0.0f, 0.1f });
+			cookie->Move({ 0.0f, 0.025f });
 		}
-		else if (Input::KeyDown(KEY_J))
+		if (Input::KeyHeldDown(KEY_A))
 		{
-			cookie->Move({ -0.1f, 0.0f });
+			cookie->Move({ -0.025f, 0.0f });
 		}
-		else if (Input::KeyDown(KEY_L))
+		if (Input::KeyHeldDown(KEY_D))
 		{
-			cookie->Move({ 0.1f, 0.0f });
+			cookie->Move({ 0.025f, 0.0f });
 		}
 		cookie->Update();
 	}
