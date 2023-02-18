@@ -11,14 +11,14 @@ namespace antibox
 }
 
 namespace text {
-	const color blue = "\033[0;34m";
-	const color red = "\033[1;31m";
-	const color green = "\033[1;32m";
-	const color yellow = "\033[0;33m";
-	const color white = "\033[0;37m";
-	const color black = "\033[0;30m";
-	const color purple = "\033[0;35m";
-	const color cyan = "\033[0;36m";
+	const textColor blue = "\033[0;34m";
+	const textColor red = "\033[1;31m";
+	const textColor green = "\033[1;32m";
+	const textColor yellow = "\033[0;33m";
+	const textColor white = "\033[0;37m";
+	const textColor black = "\033[0;30m";
+	const textColor purple = "\033[0;35m";
+	const textColor cyan = "\033[0;36m";
 }
 
 #define ERROR text::red

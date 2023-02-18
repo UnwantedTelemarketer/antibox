@@ -1292,7 +1292,7 @@
     <ClInclude Include="Libraries\include\antibox\core\mathlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="GameStuff\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\include\antibox\objects\scene.h">
@@ -1301,7 +1301,10 @@
     <ClInclude Include="Libraries\include\antibox\graphics\texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entities.h">
+    <ClInclude Include="GameStuff\entities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStuff\inventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

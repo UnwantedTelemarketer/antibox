@@ -2,15 +2,16 @@
 
 class Vector2;
 class Vector2_I;
-typedef const char color[8];
+
+typedef const char textColor[8];
 
 namespace Console {
 	//Logs a message to the command prompt. ERROR is red, WARNING is yellow, SUCCESS is green, LOG is white.
-	void Log(std::string message, color type);
-	void Log(uint32_t message, color type);
-	void Log(unsigned char* message, color type);
-	void Log(Vector2 vec, color type);
-	void Log(Vector2_I vec, color type);
+	void Log(std::string message, textColor type);
+	void Log(uint32_t message, textColor type);
+	void Log(unsigned char* message, textColor type);
+	void Log(Vector2 vec, textColor type);
+	void Log(Vector2_I vec, textColor type);
 	//Writes a message and returns the message as a string. ERROR is red, WARNING is yellow, SUCCESS is green, LOG is white.
 	//std::string LogOut(std::string message, int type);
 }

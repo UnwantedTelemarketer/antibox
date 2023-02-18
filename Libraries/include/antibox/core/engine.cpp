@@ -58,7 +58,7 @@ namespace antibox
 		crntTime = glfwGetTime();
 		timeDiff = crntTime - prevtime;
 		counter++; 
-		if (timeDiff >= 1.0 / 30.0) {
+		if (timeDiff >= 1.0 / 60.0) {
 			fps = (1.0 / timeDiff) * counter;
 			ms = (timeDiff / counter) * 1000;
 			prevtime = crntTime; 	

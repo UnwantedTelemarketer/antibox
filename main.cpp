@@ -1,7 +1,8 @@
-#include "Game.h"
+#include "GameStuff/Game.h"
 #define CURRENTWINDOW Engine::Instance().GetWindow()->glfwin()
 
 using namespace antibox;
+
 
 class Caves : public App {
 private:
@@ -12,14 +13,17 @@ private:
 		props.vsync = 1;
 		return props;
 	}
-	float tickRateVisual;
+	float tickRateVisual, lastFPS;
+	int counter = 0;
 public:
 	//UI stuff
 	bool statsOpen, debugOpen;
 	std::string openClose;
 	//Game Stuff
 	GameManager game;
+	Inventory pInv;
 	Entity zombo = { 100, "Zombie" };
+	Entity chicken = { 25, "Chicken" };
 	Player& player = game.mPlayer;
 	float& health = game.mPlayer.health;
 	Map& map = game.mainMap;
@@ -28,8 +32,11 @@ public:
 		health = 100.0f;
 		statsOpen = false;
 		openClose = "Open Stats";
-		game.Setup(10, 10, 1);
-		game.SpawnEnemy(&zombo);
+		game.Setup(10, 10, 0.5f);
+		game.SpawnEntity(&zombo);
+		game.SpawnEntity(&chicken);
+
+		pInv.clothes = { 1, 1, 0 };
 	}
 	void Update() {
 		game.UpdateEntities();
@@ -58,9 +65,9 @@ public:
 		ImGui::Begin("Map");
 		for (int i = 0; i < CHUNK_WIDTH; i++) {
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
-				switch (game.mainMap.modifiedChunk.localCoords[i][j]) {
+				switch (game.mainMap.entityLayer.localCoords[i][j]) {
 				case 0:
-					ImGui::Text(ENT_PLAYER);
+					ImGui::TextColored(ImVec4(pInv.clothes.x, pInv.clothes.y, pInv.clothes.z, 1), ENT_PLAYER);
 					break;
 				case 2:
 					ImGui::TextColored(ImVec4(0, 1, 1, 1), TILE_WATER);
@@ -73,6 +80,9 @@ public:
 					break;
 				case 36:
 					ImGui::TextColored(ImVec4(0.75f, 0, 0, 1), ENT_ZOMBIE);
+					break;
+				case 37:
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), ENT_CHICKEN);
 					break;
 				default:
 					ImGui::TextColored(ImVec4(0, 1, 0, 1), TILE_GRASS);
@@ -111,7 +121,6 @@ public:
 					ImGui::Text("Soaked!");
 					ImGui::PopStyleColor(1);
 				}
-				ImGui::Text(std::to_string(Engine::Instance().getFPS()).c_str());
 			ImGui::End();
 		}
 		//------NPC------
@@ -130,16 +139,24 @@ public:
 		if (debugOpen) {
 			ImGui::Begin("Debug Window");
 			//FPS
-			ImGui::Text(("FPS: " + std::to_string(Engine::Instance().getFPS())).c_str());
+			if (counter == 30) { lastFPS = Engine::Instance().getFPS(); counter = 0; }
+			else { counter++; }
+			ImGui::Text(("FPS: " + std::to_string(lastFPS)).c_str());
 			//ms left until next tick
-			ImGui::Text(("Milliseconds until next update: " + std::to_string(game.GetTick())).c_str());
+			ImGui::Text(("Time until next update:"));
 			//Display a bar until next tick
 			ImGui::ProgressBar(game.GetTick() / game.TickRate(), ImVec2(0.0f, 0.0f));
 			//set tickrate
-			ImGui::InputFloat("New Tickrate", &tickRateVisual, 0.1f, 10);
+			ImGui::InputFloat("New Tickrate", &tickRateVisual, 0.5f, 10);
 			if (ImGui::Button("Change Tickrate")) {
 				game.SetTick(tickRateVisual);
 			}
+			ImGui::Text(("Local X: " + std::to_string(player.xCoord)).c_str());
+			ImGui::Text(("Local Y: " + std::to_string(player.yCoord)).c_str());
+			
+
+			ImGui::Text(("Global X: " + std::to_string(map.c_glCoords.x)).c_str());
+			ImGui::Text(("Global Y: " + std::to_string(map.c_glCoords.y)).c_str());
 
 			ImGui::End();
 		}

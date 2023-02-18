@@ -20,13 +20,26 @@ namespace Math{
 	}
 }
 
+struct Vector2_I
+{
+	int x, y;
+};
 
 struct Vector2
 {
 	float x, y;
 };
 
-struct Vector2_I
+struct Vector3
 {
-	int x, y;
+	float x, y, z;
 };
+
+struct Vector4
+{
+	float x, y, z, w;
+};
+
+typedef Vector2 Vec2;
+typedef Vector3 Vec3;
+typedef Vector4 Vec4;

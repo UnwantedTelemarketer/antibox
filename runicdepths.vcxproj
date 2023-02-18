@@ -184,8 +184,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="entities.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameStuff\entities.h" />
+    <ClInclude Include="GameStuff\Game.h" />
+    <ClInclude Include="GameStuff\inventory.h" />
     <ClInclude Include="Libraries\include\antibox\core\app.h" />
     <ClInclude Include="Libraries\include\antibox\core\engine.h" />
     <ClInclude Include="Libraries\include\antibox\core\imguiwindow.h" />
