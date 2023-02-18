@@ -6,6 +6,7 @@ struct Entity {
 	float health;
 	const char* name;
 	int xCoord, yCoord;
+	int index; //in entity list
 };
 
 #define TILE_WATER "~"
