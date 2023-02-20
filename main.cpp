@@ -1,5 +1,9 @@
 #include "GameStuff/game.h"
 #define CURRENTWINDOW Engine::Instance().GetWindow()->glfwin()
+#define UNIFONT "c:\\Users\\Thomas Andrew\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Unifont.ttf"
+#define CASCADIA "c:\\Windows\\Fonts\\CascadiaCode.ttf"
+
+#include <conio.h>
 
 using namespace antibox;
 
@@ -8,16 +12,20 @@ class Caves : public App {
 private:
 	WindowProperties GetWindowProperties() { 
 		WindowProperties props;
+		
+		props.imguiProps = { true, true, false, UNIFONT};
 		props.w = 1280;
 		props.h = 720;
 		props.vsync = 1;
 		return props;
 	}
+
 	float tickRateVisual, lastFPS;
 	int counter = 0;
 public:
 	//UI stuff
-	bool statsOpen, debugOpen;
+	bool statsOpen, debugOpen, interacting;
+	Vector2_I selectedTile;
 	std::string openClose;
 	//Game Stuff
 	GameManager game;
@@ -36,25 +44,59 @@ public:
 		game.SpawnEntity(&zombo);
 		game.SpawnEntity(&chicken);
 
-		pInv.clothes = { 1, 1, 0 };
+		pInv.clothes = { 0.75, 0.45, 0.15 };
 	}
+
 	void Update() {
 		game.UpdateEntities();
 		if (Input::KeyDown(KEY_UP)) {
+			if (interacting)
+			{
+				selectedTile = { player.coords.y - 1, player.coords.x };
+				interacting = false;
+				return;
+			}
+			selectedTile = { -1,-1 };
 			game.MovePlayer(MAP_UP);
 		}
 		else if (Input::KeyDown(KEY_DOWN)) {
+			if (interacting)
+			{
+				selectedTile = { player.coords.y + 1, player.coords.x };
+				interacting = false;
+				return;
+			}
+			selectedTile = { -1,-1 };
 			game.MovePlayer(MAP_DOWN);
 		}
 		else if (Input::KeyDown(KEY_LEFT)) {
+			if (interacting) 
+			{
+				selectedTile = { player.coords.y, player.coords.x - 1 };
+				interacting = false;
+				return;
+			}
+			selectedTile = { -1,-1 };
 			game.MovePlayer(MAP_LEFT);
 		}
 		else if (Input::KeyDown(KEY_RIGHT)) {
+			if (interacting)
+			{
+				selectedTile = { player.coords.y, player.coords.x + 1 };
+				interacting = false;
+				return;
+			}
+			selectedTile = { -1,-1 };
 			game.MovePlayer(MAP_RIGHT);
 		}
 		else if (Input::KeyDown(KEY_P))
 		{
 			debugOpen = !debugOpen;
+		}
+		else if (Input::KeyDown(KEY_E))
+		{
+			Math::PushBackLog(&game.actionLog, "Which direction will you interact with?");
+			interacting = true;
 		}
 	}
 
@@ -63,8 +105,10 @@ public:
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 		//------Map-------
 		ImGui::Begin("Map");
+		ImGui::PushFont(Engine::Instance().getFont());
 		for (int i = 0; i < CHUNK_WIDTH; i++) {
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
+				//ImGui::Text(game.GetTileChar());
 				switch (game.mainMap.entityLayer.localCoords[i][j]) {
 				case 0:
 					ImGui::TextColored(ImVec4(pInv.clothes.x, pInv.clothes.y, pInv.clothes.z, 1), ENT_PLAYER);
@@ -73,7 +117,7 @@ public:
 					ImGui::TextColored(ImVec4(0, 1, 1, 1), TILE_WATER);
 					break;
 				case 3:
-					ImGui::TextColored(ImVec4(0, 1, 0, 1), TILE_FLOWER);
+					ImGui::TextColored(ImVec4(0.5, 0.9, 0.15, 1), TILE_FLOWER);
 					break;
 				case 35:
 					ImGui::TextColored(ImVec4(1, 1, 0, 1), ENT_HUMAN);
@@ -92,6 +136,7 @@ public:
 			}
 			ImGui::Text("");
 		}
+		ImGui::PopFont();
 		ImGui::End();
 		//------Action Log----
 		ImGui::Begin("Action Log");
@@ -121,6 +166,20 @@ public:
 					ImGui::Text("Soaked!");
 					ImGui::PopStyleColor(1);
 				}
+			ImGui::End();
+		}
+		//------Inventory------
+		ImGui::Begin("Inventory");
+		for (int i = 0; i < pInv.items.size(); i++)
+		{
+			ImGui::Text(pInv.items[i].name.c_str()); ImGui::SameLine();
+			ImGui::Text(CHAR_ARRAY(pInv.items[i].count));
+		}
+		ImGui::End();
+		//------Inventory------
+		if (selectedTile != Vector2_I{ -1, -1}) 
+		{
+			ImGui::Begin("Selected Tile");
 			ImGui::End();
 		}
 		//------NPC------
@@ -154,10 +213,9 @@ public:
 			ImGui::Text(("Local X: " + std::to_string(player.coords.x)).c_str());
 			ImGui::Text(("Local Y: " + std::to_string(player.coords.y)).c_str());
 			
-
 			ImGui::Text(("Global X: " + std::to_string(map.c_glCoords.x)).c_str());
 			ImGui::Text(("Global Y: " + std::to_string(map.c_glCoords.y)).c_str());
-
+			
 			ImGui::End();
 		}
 	}

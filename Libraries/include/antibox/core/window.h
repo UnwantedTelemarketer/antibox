@@ -14,7 +14,7 @@ namespace antibox {
 	//Window Properties is how you edit width, height, title, and background color as well as editing ImGui Properties.
 	struct WindowProperties
 	{
-		ImguiWindowProperties imguiProps;
+		ImguiWindowProperties imguiProps; //Titlebar only, Docking, Viewport, FontPath, FontSize (float)
 		std::string title; // Title of the window.
 		int w, h, vsync; //Width and height of the window.
 		glm::vec4 cc; //Background Clear Color.

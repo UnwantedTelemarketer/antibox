@@ -13,10 +13,20 @@ struct Entity {
 
 };
 
+struct Item {
+	std::string name;
+	int id;
+	int count;
+
+	float weight;
+	int coveredIn; //liquids
+	bool container;//holds liquid
+};
+
 #define TILE_WATER "~"
 #define TILE_GRASS "."
 #define TILE_TREE "^"
-#define TILE_FLOWER "*"
+#define TILE_FLOWER "#"
 #define ENT_ZOMBIE "Z"
 #define ENT_CHICKEN "C"
 #define ENT_PLAYER "@"

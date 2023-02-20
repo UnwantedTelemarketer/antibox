@@ -29,7 +29,7 @@ namespace antibox
 		window->init(props);
 		mRenderManager.Init();
 		mApp->Init();
-		srand((unsigned)time(NULL));
+		srand((unsigned)time(NULL)); //for rng
 	}
 
 	//void Engine::AddToObjects(GameObject* go) {
@@ -90,18 +90,4 @@ namespace antibox
 	Engine::~Engine() {
 		delete window;
 	}
-
-	/*Console::Console() {
-
-	}
-	Console::~Console() {
-
-	}
-
-	Console& Console::Instance() {
-		if (!mIO) {
-			mIO = new Console();
-		}
-		return *mIO;
-	}*/
 }

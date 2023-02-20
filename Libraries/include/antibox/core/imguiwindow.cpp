@@ -18,7 +18,10 @@ namespace antibox
 		if (props.IsViewportEnabled) {
 			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		}
-		//(void)io; 
+		(void)io; 
+		io.Fonts->AddFontDefault();
+		mainFont = io.Fonts->AddFontFromFileTTF(props.fontPath,props.fontSize, NULL, io.Fonts->GetGlyphRangesCyrillic());
+		IM_ASSERT(mainFont != NULL);
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(Engine::Instance().GetWindow()->glfwin(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");

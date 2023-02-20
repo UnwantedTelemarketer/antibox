@@ -41,6 +41,7 @@ namespace antibox {
 		inline render::RenderManager& GetRenderManager() { return mRenderManager; } //Returns RenderManager
 		double getFPS() { return fps; } //Returns the framerate.
 		double deltaTime() { return ms; } //Returns the milliseconds between frames.
+		ImFont* getFont() { return window->imwin().mainFont; }
 
 	private:
 
@@ -49,9 +50,8 @@ namespace antibox {
 		static Engine* mInstance; //Local reference to the engine singleton
 
 		render::RenderManager mRenderManager; //RenderManager takes in Render Commands for rendering
-		//std::vector<GameObject*> gos; //This is an array of gameobjects so everytime you make a new one, it adds it to here to be updated and rendered.
 
-		double prevtime = 0.0; //all of this is for counting framerate if people want
+		double prevtime = 0.0; //delta time stuff
 		double crntTime = 0.0; 
 		double timeDiff; 
 		double fps;

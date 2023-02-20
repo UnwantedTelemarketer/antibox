@@ -11,6 +11,8 @@ namespace antibox
 		bool MoveTitleBarOnly = true;
 		bool DockingEnabled = true;
 		bool IsViewportEnabled = false;
+		const char* fontPath = "c:\\Windows\\Fonts\\Arial.ttf";
+		float fontSize = 16.f;
 	};
 
 	class ImguiWindow 
@@ -18,6 +20,7 @@ namespace antibox
 	public:
 		ImguiWindow() {}
 		~ImguiWindow() {}
+		ImFont* mainFont;
 
 		void Create(const ImguiWindowProperties& props);
 		void Shutdown();

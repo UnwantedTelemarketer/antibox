@@ -28,6 +28,11 @@ struct Vector2_I
 		if (vec2.x == x && vec2.y == y) { return true; }
 		return false;
 	}
+
+	bool operator!=(Vector2_I vec2) {
+		if (vec2.x == x && vec2.y == y) { return false; }
+		return true;
+	}
 };
 
 struct Vector2
