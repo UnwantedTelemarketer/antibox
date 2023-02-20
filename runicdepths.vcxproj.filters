@@ -90,6 +90,9 @@
     <ClCompile Include="Libraries\include\antibox\graphics\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameStuff\game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\include\imgui\imconfig.h">
@@ -1292,7 +1295,7 @@
     <ClInclude Include="Libraries\include\antibox\core\mathlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameStuff\Game.h">
+    <ClInclude Include="GameStuff\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\include\antibox\objects\scene.h">

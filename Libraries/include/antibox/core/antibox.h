@@ -30,6 +30,9 @@ int main() {
 	return 0;
 }
 
+#ifndef INPUT_FUNCS
+
+#define INPUT_FUNCS 
 namespace Input {
 
 	//Returns true if the key is held, false if not.
@@ -70,3 +73,4 @@ namespace Input {
 
 }
 
+#endif

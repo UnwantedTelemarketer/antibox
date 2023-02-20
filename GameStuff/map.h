@@ -1,7 +1,7 @@
 #pragma once
-
 #include "antibox/core/antibox.h"
 #include "antibox/managers/factory.h"
+
 #include "entities.h"
 #include "inventory.h"
 #include <algorithm>
@@ -18,8 +18,7 @@
 struct Player {
 	float health = 0;
 	std::string name = "Blank";
-	int xCoord = 0;
-	int yCoord = 0;
+	Vector2_I coords;
 	int coveredIn = 0; // 0 = nothing, 1 = water, 2 = mud
 	int ticksCovered = 0;
 };
@@ -65,7 +64,7 @@ public:
 
 	void MovePlayer(int x, int y, Player* p, std::vector<std::string>* actionLog) {
 		ClearEntities(*p);
-		p->xCoord = x; p->yCoord = y;
+		p->coords.x = x; p->coords.y = y;
 		CheckBounds(p);
 		//if (CurrentChunk().localCoords[y][x] == 2) { p->coveredIn = 1; Math::PushBackLog(actionLog, "You are now wet."); }
 		PlaceEntities(*p);
@@ -74,24 +73,24 @@ public:
 	//check if player moves to the next chunk
 	void CheckBounds(Player* p) { 
 		bool changed = false;
-		if (p->xCoord > CHUNK_WIDTH - 1) {
+		if (p->coords.x > CHUNK_WIDTH - 1) {
 			changed = true;
-			p->xCoord = 0;
+			p->coords.x = 0;
 			c_glCoords.x++;
 		}
-		else if (p->xCoord < 0) {
+		else if (p->coords.x < 0) {
 			changed = true;
-			p->xCoord = CHUNK_WIDTH - 1;
+			p->coords.x = CHUNK_WIDTH - 1;
 			c_glCoords.x--;
 		}
-		else if (p->yCoord > CHUNK_HEIGHT - 1) {
+		else if (p->coords.y > CHUNK_HEIGHT - 1) {
 			changed = true;
-			p->yCoord = 0;
+			p->coords.y = 0;
 			c_glCoords.y++;
 		}
-		else if (p->yCoord < 0) {
+		else if (p->coords.y < 0) {
 			changed = true;
-			p->yCoord = CHUNK_HEIGHT - 1;
+			p->coords.y = CHUNK_HEIGHT - 1;
 			c_glCoords.y--;
 		}
 		if (changed) {
@@ -102,27 +101,27 @@ public:
 	void CheckBounds(Entity* p) { 
 		bool changed = false;
 		int oldIndex = p->index;
-		if (p->xCoord > CHUNK_WIDTH - 1) {
+		if (p->coords.x > CHUNK_WIDTH - 1) {
 			changed = true;
-			p->xCoord = 0;
+			p->coords.x = 0;
 			gameMap.map[c_glCoords.x + 1][c_glCoords.y].entities.push_back(p);
 			p->index = gameMap.map[c_glCoords.x + 1][c_glCoords.y].entities.size() - 1;
 		}
-		else if (p->xCoord < 0) {
+		else if (p->coords.x < 0) {
 			changed = true;
-			p->xCoord = CHUNK_WIDTH - 1;
+			p->coords.x = CHUNK_WIDTH - 1;
 			gameMap.map[c_glCoords.x - 1][c_glCoords.y].entities.push_back(p);
 			p->index = gameMap.map[c_glCoords.x - 1][c_glCoords.y].entities.size() - 1;
 		}
-		else if (p->yCoord > CHUNK_HEIGHT - 1) {
+		else if (p->coords.y > CHUNK_HEIGHT - 1) {
 			changed = true;
-			p->yCoord = 0;
+			p->coords.y = 0;
 			gameMap.map[c_glCoords.x][c_glCoords.y + 1].entities.push_back(p);
 			p->index = gameMap.map[c_glCoords.x][c_glCoords.y + 1].entities.size() - 1;
 		}
-		else if (p->yCoord < 0) {
+		else if (p->coords.y < 0) {
 			changed = true;
-			p->yCoord = CHUNK_HEIGHT - 1;
+			p->coords.y = CHUNK_HEIGHT - 1;
 			gameMap.map[c_glCoords.x][c_glCoords.y - 1].entities.push_back(p);
 			p->index = gameMap.map[c_glCoords.x][c_glCoords.y - 1].entities.size() - 1;
 		}
@@ -158,10 +157,10 @@ public:
 
 	bool NearNPC(Player p) {
 		//check around player
-		if (entityLayer.localCoords[p.yCoord + 1][p.xCoord] == '#' ||
-			entityLayer.localCoords[p.yCoord - 1][p.xCoord] == '#' ||
-			entityLayer.localCoords[p.yCoord][p.xCoord + 1] == '#' ||
-			entityLayer.localCoords[p.yCoord][p.xCoord - 1] == '#') {
+		if (entityLayer.localCoords[p.coords.y + 1][p.coords.x] == '#' ||
+			entityLayer.localCoords[p.coords.y - 1][p.coords.x] == '#' ||
+			entityLayer.localCoords[p.coords.y][p.coords.x + 1] == '#' ||
+			entityLayer.localCoords[p.coords.y][p.coords.x - 1] == '#') {
 			return true;
 		}
 		return false;
@@ -170,25 +169,25 @@ public:
 	void ClearEntities(Player p)
 	{
 		//go to the player and all entities and replace the original tile
-		entityLayer.localCoords[p.yCoord][p.xCoord] = CurrentChunk().localCoords[p.yCoord][p.xCoord];
+		entityLayer.localCoords[p.coords.y][p.coords.x] = CurrentChunk().localCoords[p.coords.y][p.coords.x];
 		for (int i = 0; i < CurrentChunk().entities.size(); i++)
 		{
 			Entity& curEn = *CurrentChunk().entities[i];
-			entityLayer.localCoords[curEn.yCoord][curEn.xCoord] = CurrentChunk().localCoords[curEn.yCoord][curEn.xCoord];
+			entityLayer.localCoords[curEn.coords.y][curEn.coords.x] = CurrentChunk().localCoords[curEn.coords.y][curEn.coords.x];
 		}
 	}
 
 	void PlaceEntities(Player p)
 	{
 		//place the player and all entities on top of the tiles
-		entityLayer.localCoords[p.yCoord][p.xCoord] = 0;
+		entityLayer.localCoords[p.coords.y][p.coords.x] = 0;
 		int id;
 		for (int i = 0; i < CurrentChunk().entities.size(); i++)
 		{
 			if (CurrentChunk().entities[i]->name == "Zombie") { id = 36; }
 			else if (CurrentChunk().entities[i]->name == "Chicken") { id = 37; }
 			else { id = 35; }
-			entityLayer.localCoords[CurrentChunk().entities[i]->yCoord][CurrentChunk().entities[i]->xCoord] = id;
+			entityLayer.localCoords[CurrentChunk().entities[i]->coords.y][CurrentChunk().entities[i]->coords.x] = id;
 		}
 	}
 

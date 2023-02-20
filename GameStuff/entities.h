@@ -1,12 +1,16 @@
 ﻿#pragma once
 
-
+enum Behaviour {Wander, Slow_Wander, Stationary};
 
 struct Entity {
 	float health;
 	const char* name;
-	int xCoord, yCoord;
+	Behaviour b;
+	bool aggressive;
+
+	Vector2_I coords;
 	int index; //in entity list
+
 };
 
 #define TILE_WATER "~"

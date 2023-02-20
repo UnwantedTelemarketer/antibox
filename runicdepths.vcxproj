@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameStuff\game.cpp" />
     <ClCompile Include="Libraries\include\antibox\core\engine.cpp" />
     <ClCompile Include="Libraries\include\antibox\core\imguiwindow.cpp" />
     <ClCompile Include="Libraries\include\antibox\core\log.cpp" />
@@ -185,7 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameStuff\entities.h" />
-    <ClInclude Include="GameStuff\Game.h" />
+    <ClInclude Include="GameStuff\game.h" />
     <ClInclude Include="GameStuff\inventory.h" />
     <ClInclude Include="GameStuff\map.h" />
     <ClInclude Include="Libraries\include\antibox\core\app.h" />

@@ -23,6 +23,11 @@ namespace Math{
 struct Vector2_I
 {
 	int x, y;
+
+	bool operator==(Vector2_I vec2) {
+		if (vec2.x == x && vec2.y == y) { return true; }
+		return false;
+	}
 };
 
 struct Vector2

@@ -1,4 +1,4 @@
-#include "GameStuff/Game.h"
+#include "GameStuff/game.h"
 #define CURRENTWINDOW Engine::Instance().GetWindow()->glfwin()
 
 using namespace antibox;
@@ -6,7 +6,7 @@ using namespace antibox;
 
 class Caves : public App {
 private:
-	WindowProperties GetWindowProperties() {
+	WindowProperties GetWindowProperties() { 
 		WindowProperties props;
 		props.w = 1280;
 		props.h = 720;
@@ -22,16 +22,16 @@ public:
 	//Game Stuff
 	GameManager game;
 	Inventory pInv;
-	Entity zombo = { 100, "Zombie" };
-	Entity chicken = { 25, "Chicken" };
+	Entity zombo = { 100, "Zombie", Stationary, true };
+	Entity chicken = { 25, "Chicken", Wander, false };
 	Player& player = game.mPlayer;
 	float& health = game.mPlayer.health;
 	Map& map = game.mainMap;
 
 	void Init() override {
 		health = 100.0f;
-		statsOpen = false;
-		openClose = "Open Stats";
+		statsOpen = true;
+		openClose = "Close Stats";
 		game.Setup(10, 10, 0.5f);
 		game.SpawnEntity(&zombo);
 		game.SpawnEntity(&chicken);
@@ -151,8 +151,8 @@ public:
 			if (ImGui::Button("Change Tickrate")) {
 				game.SetTick(tickRateVisual);
 			}
-			ImGui::Text(("Local X: " + std::to_string(player.xCoord)).c_str());
-			ImGui::Text(("Local Y: " + std::to_string(player.yCoord)).c_str());
+			ImGui::Text(("Local X: " + std::to_string(player.coords.x)).c_str());
+			ImGui::Text(("Local Y: " + std::to_string(player.coords.y)).c_str());
 			
 
 			ImGui::Text(("Global X: " + std::to_string(map.c_glCoords.x)).c_str());
