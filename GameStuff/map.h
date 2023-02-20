@@ -2,7 +2,7 @@
 #include "antibox/core/antibox.h"
 #include "antibox/managers/factory.h"
 
-#include "entities.h"
+#include "items.h"
 #include "inventory.h"
 #include <algorithm>
 
@@ -12,17 +12,8 @@
 #define MAP_RIGHT 4
 #define CHUNK_WIDTH 30
 #define CHUNK_HEIGHT 30
-#define MAP_HEIGHT 10
-#define MAP_WIDTH 10
-
-struct Player {
-	float health = 0;
-	float thirst = 100;
-	std::string name = "Blank";
-	Vector2_I coords;
-	Liquid coveredIn = nothing;
-	int ticksCovered = 0;
-};
+#define MAP_HEIGHT 5
+#define MAP_WIDTH 5
 
 struct Chunk {
 	Vector2_I globalChunkCoord;
@@ -55,7 +46,18 @@ public:
 				world.chunks[x][y].globalChunkCoord.x = x;
 				world.chunks[x][y].globalChunkCoord.y = y;
 				BuildChunk(&world.chunks[x][y]);
+				SpawnChunkEntities(&world.chunks[x][y]);
 			}
+		}
+		
+	}
+
+	void SpawnChunkEntities(Chunk* chunk) 
+	{
+		for (int i = 0; i < Math::RandInt(10); i++)
+		{
+			Entity* zomb = new Entity{ 25, "Zombie", ID_ZOMBIE, Wander, true, Math::RandInt(CHUNK_WIDTH), Math::RandInt(CHUNK_HEIGHT) };
+			chunk->entities.push_back(zomb);
 		}
 	}
 
@@ -82,52 +84,65 @@ public:
 	void CheckBounds(Player* p) { 
 		bool changed = false;
 		if (p->coords.x > CHUNK_WIDTH - 1) {
+			c_glCoords.x++;
+			if (c_glCoords.x >= CHUNK_WIDTH - 1) { c_glCoords.x = CHUNK_WIDTH - 1; goto offscreen; }
 			changed = true;
 			p->coords.x = 0;
-			c_glCoords.x++;
 		}
 		else if (p->coords.x < 0) {
+			c_glCoords.x--;
+			if (c_glCoords.x < 0) { c_glCoords.x = 0; goto offscreen; }
 			changed = true;
 			p->coords.x = CHUNK_WIDTH - 1;
-			c_glCoords.x--;
 		}
 		else if (p->coords.y > CHUNK_HEIGHT - 1) {
+			c_glCoords.y++;
+			if (c_glCoords.y >= CHUNK_WIDTH - 1) { c_glCoords.y = CHUNK_WIDTH - 1; goto offscreen; }
 			changed = true;
 			p->coords.y = 0;
-			c_glCoords.y++;
 		}
 		else if (p->coords.y < 0) {
+			c_glCoords.y--;
+			if (c_glCoords.y < 0) { c_glCoords.y = 0; goto offscreen; }
 			changed = true;
 			p->coords.y = CHUNK_HEIGHT - 1;
-			c_glCoords.y--;
 		}
-		/*if (changed) {
-			SetShownChunk();
-		}*/
+
+		//if the player would go offscreen, reset them
+		//Evil goto statement >:)
+		offscreen:
+		if (p->coords.x >= CHUNK_WIDTH) { p->coords.x = CHUNK_WIDTH - 1; }
+		else if (p->coords.y >= CHUNK_HEIGHT) { p->coords.y = CHUNK_HEIGHT - 1; }
+		else if (p->coords.x < 0) { p->coords.x = 0; }
+		else if (p->coords.y < 0) { p->coords.y = 0; }
 	}
 	//check if entity moves to next chunk
 	void CheckBounds(Entity* p) { 
 		bool changed = false;
 		int oldIndex = p->index;
 		if (p->coords.x > CHUNK_WIDTH - 1) {
+			if (c_glCoords.x + 1 >= CHUNK_WIDTH) { return; }
 			changed = true;
 			p->coords.x = 0;
 			world.chunks[c_glCoords.x + 1][c_glCoords.y].entities.push_back(p);
 			p->index = world.chunks[c_glCoords.x + 1][c_glCoords.y].entities.size() - 1;
 		}
 		else if (p->coords.x < 0) {
+			if (c_glCoords.x - 1 < 0) { return; }
 			changed = true;
 			p->coords.x = CHUNK_WIDTH - 1;
 			world.chunks[c_glCoords.x - 1][c_glCoords.y].entities.push_back(p);
 			p->index = world.chunks[c_glCoords.x - 1][c_glCoords.y].entities.size() - 1;
 		}
 		else if (p->coords.y > CHUNK_HEIGHT - 1) {
+			if (c_glCoords.y + 1 >= CHUNK_HEIGHT) { return; }
 			changed = true;
 			p->coords.y = 0;
 			world.chunks[c_glCoords.x][c_glCoords.y + 1].entities.push_back(p);
 			p->index = world.chunks[c_glCoords.x][c_glCoords.y + 1].entities.size() - 1;
 		}
 		else if (p->coords.y < 0) {
+			if (c_glCoords.y - 1 < 0) { return; }
 			changed = true;
 			p->coords.y = CHUNK_HEIGHT - 1;
 			world.chunks[c_glCoords.x][c_glCoords.y - 1].entities.push_back(p);
@@ -147,9 +162,9 @@ public:
 		for (int i = 0; i < CHUNK_WIDTH; i++) {
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
 				int currentTile = Math::RandNum(10);
-				if (currentTile > 9) { chunk->localCoords[i][j].id = ID_DIRT; chunk->localCoords[i][j].liquid = water; }
-				else if (currentTile > 7) { chunk->localCoords[i][j].id = ID_FLOWER; }
-				else { chunk->localCoords[i][j].id = ID_GRASS; }
+				if (currentTile > 9) { chunk->localCoords[i][j] = Tile_Puddle; }
+				else if (currentTile > 7) { chunk->localCoords[i][j] = Tile_TallGrass; }
+				else { chunk->localCoords[i][j] = Tile_Grass; }
 			}
 		}
 	}
@@ -194,6 +209,21 @@ public:
 		for (int i = 0; i < CurrentChunk().entities.size(); i++)
 		{
 			CurrentChunk().entities[i]->index = i;
+		}
+	}
+
+
+	~Map() 
+	{
+		for (int x = 0; x < MAP_WIDTH; x++)
+		{
+			for (int y = 0; y < MAP_HEIGHT; y++)
+			{
+				for (int i = 0; i < world.chunks[x][y].entities.size(); i++)
+				{
+					delete(&world.chunks[x][y].entities[i]);
+				}
+			}
 		}
 	}
 

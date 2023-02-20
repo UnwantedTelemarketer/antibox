@@ -1,8 +1,11 @@
 ﻿#pragma once
 
-enum Behaviour {Wander, Slow_Wander, Stationary};
-enum Liquid {nothing, water, mud, fire};
+enum Action { use, consume, combine };
+enum Behaviour { Wander, Slow_Wander, Stationary };
+enum ConsumeEffect { none, heal, quench, saturate, damage, coverInLiquid };
+enum Liquid { nothing, water, mud, fire };
 
+//Health, Name, ID, Behaviour, Aggressive
 struct Entity {
 	float health;
 	const char* name;
@@ -15,17 +18,38 @@ struct Entity {
 
 };
 
+//Consume, BodyUse
+struct ActionEffect {
+	ConsumeEffect onConsume;
+	ConsumeEffect onBodyUse;
+};
+
+struct Player {
+	float health = 100;
+	float thirst = 100;
+	float hunger = 100;
+	std::string name = "Blank";
+	Vector2_I coords;
+	Liquid coveredIn = nothing;
+	int ticksCovered = 0;
+};
+
 struct Tile {
 	int id;
 	Liquid liquid;
 	Entity* entity;
+	bool collectible;
+	int replacementID = id;
 };
 
+//Name, ID, Stackable, Holds Liquid, Count, Weight, Liquid, LAmount
 struct Item {
 	std::string name;
 	int id;
-	bool stackable, holdsLiquid;
+	bool stackable, holdsLiquid, consumable;
+	ActionEffect use;
 	int count = 1;
+	std::string consumeTxt, useTxt;
 
 	float weight;
 	Liquid coveredIn = nothing; //liquids
@@ -40,7 +64,7 @@ struct Item {
 #define TILE_GRASS "."
 #define ID_GRASS 1
 
-#define TILE_DIRT ","
+#define TILE_DIRT "."
 #define ID_DIRT 2
 
 #define TILE_TREE "^"
@@ -65,3 +89,5 @@ struct Item {
 #define ID_HUMAN 3
 
 #define ITEM_CONTAINER 1
+#define ITEM_BANDAGE 2
+#define ITEM_GRASS 3

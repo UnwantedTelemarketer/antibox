@@ -3,8 +3,6 @@
 #define UNIFONT "c:\\Users\\Thomas Andrew\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Unifont.ttf"
 #define CASCADIA "c:\\Windows\\Fonts\\CascadiaCode.ttf"
 
-#include <conio.h>
-
 using namespace antibox;
 
 
@@ -13,7 +11,7 @@ private:
 	WindowProperties GetWindowProperties() { 
 		WindowProperties props;
 		
-		props.imguiProps = { true, true, false, CASCADIA};
+		props.imguiProps = { true, true, false, UNIFONT};
 		props.w = 1280;
 		props.h = 720;
 		props.vsync = 1;
@@ -24,15 +22,15 @@ private:
 	int counter = 0;
 public:
 	//UI stuff
-	bool statsOpen, debugOpen, interacting, itemMenu, navInv;
+	bool statsOpen, debugOpen, interacting, itemMenu, navInv, useBool;
 	Tile* selectedTile = nullptr;
 	int currentItemIndex = 0;
 	std::string openClose;
 	//Game Stuff
 	GameManager game;
 	Inventory pInv;
-	Entity zombo = { 100, "Zombie", ID_ZOMBIE, Stationary, true };
-	Entity chicken = { 25, "Chicken", ID_CHICKEN, Wander, false };
+	//Entity zombo = { 100, "Zombie", ID_ZOMBIE, Stationary, true };
+	//Entity chicken = { 25, "Chicken", ID_CHICKEN, Wander, false };
 	Player& player = game.mPlayer;
 	float& health = game.mPlayer.health;
 	Map& map = game.mainMap;
@@ -43,10 +41,12 @@ public:
 		openClose = "Close Stats";
 		navInv = false;
 		game.Setup(10, 10, 0.5f);
-		game.SpawnEntity(&zombo);
-		game.SpawnEntity(&chicken);
+		//game.SpawnEntity(&zombo);
+		//game.SpawnEntity(&chicken);
 
 		pInv.clothes = { 0.75, 0.45, 0.15 };
+		pInv.AddItem(canteen);
+		pInv.AddItem(bandage);
 	}
 
 	void Update() {
@@ -112,14 +112,6 @@ public:
 			navInv = !navInv;
 			itemMenu = navInv;
 		}
-		else if (Input::KeyDown(KEY_M))
-		{
-			pInv.AddItem({ "Canteen (Empty)", 1, false, true, 0 });
-		}
-		else if (Input::KeyDown(KEY_L))
-		{
-			pInv.AddItem({ "Grass", 12, true, false, 1 });
-		}
 		else if (Input::KeyDown(KEY_E))
 		{
 			if (!navInv) 
@@ -173,23 +165,28 @@ public:
 		//------Stats------
 		if(statsOpen){
 			ImGui::Begin("Stats");
-				ImGui::Text("Health");
-				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{1,0,0,1});
-				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0.45,0,0,1 });
+				ImGui::TextColored(ImVec4{0.85, 0.15, 0.15, 1},"Health");
+				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{0.85,0,0,1});
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0.5,0,0,1 });
 				ImGui::ProgressBar(game.mPlayer.health / 100, ImVec2(0.0f, 0.0f));
 				ImGui::PopStyleColor(2);
 
 
-				ImGui::Text("Thirst");
+				ImGui::TextColored(ImVec4{ 0.15, 0.65, 1, 1 }, "Thirst");
 				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{ 0,0.5,1,1 });
-				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0,0,0.45,1 });
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0,0.25,0.5,1 });
 				ImGui::ProgressBar(game.mPlayer.thirst / 100, ImVec2(0.0f, 0.0f));
 				ImGui::PopStyleColor(2);
 
+
+				ImGui::TextColored(ImVec4{ 1, 0.6, 0.15, 1 }, "Hunger");
+				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{ 0.8,0.5,0,1 });
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0.4,0.25,0,1 });
+				ImGui::ProgressBar(game.mPlayer.hunger / 100, ImVec2(0.0f, 0.0f));
+				ImGui::PopStyleColor(2);
+
 				if (player.coveredIn == water) {
-					ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(1.5f, 1.0f, 1.0f));
-					ImGui::Text("Soaked!");
-					ImGui::PopStyleColor(1);
+					ImGui::TextColored(ImVec4{ 0, 0.6, 1, 1 }, "Soaked!");
 				}
 			ImGui::End();
 		}
@@ -198,12 +195,14 @@ public:
 		ImGui::Begin("Inventory");
 		for (int i = 0; i < pInv.items.size(); i++)
 		{
+			if (pInv.items[i].count <= 0) { continue; }
 			if (i == currentItemIndex && navInv) {
 				ImGui::Text("> "); ImGui::SameLine();
 			}
 			ImGui::Text(pInv.items[i].name.c_str()); ;
-			if (pInv.items[i].count > 0) 
+			if (pInv.items[i].count > 1) 
 			{
+				ImGui::SameLine(); ImGui::Text("x");
 				ImGui::SameLine(); ImGui::Text(CHAR_ARRAY(pInv.items[i].count));
 			}
 		}
@@ -218,7 +217,9 @@ public:
 				if (pInv.AttemptCollect(selectedTile)) 
 				{
 					selectedTile->liquid = nothing;
-					Math::PushBackLog(&game.actionLog, "You collect the water off the ground.");
+					selectedTile->id = selectedTile->replacementID;
+					selectedTile->collectible = false;
+					Math::PushBackLog(&game.actionLog, "You collect off the ground.");
 				}
 				else {
 
@@ -245,6 +246,7 @@ public:
 				ImGui::ProgressBar(pInv.items[currentItemIndex].liquidAmount / 100, ImVec2(0.0f, 0.0f));
 				ImGui::PopStyleColor(2);
 			}
+
 			if (pInv.items[currentItemIndex].stackable) {
 				ImGui::Text("[ Holding x");
 				ImGui::SameLine(); 
@@ -252,7 +254,42 @@ public:
 				ImGui::SameLine();
 				ImGui::Text("]");
 			}
-			
+
+			if (ImGui::Button("Use"))
+			{
+				useBool = !useBool;
+			}
+
+			if (useBool)
+			{
+				ImGui::Text("On what?");
+				if (ImGui::Button("Consume")) 
+				{
+					if (pInv.AttemptAction(consume, &pInv.items[currentItemIndex], &player))
+					{
+						if (pInv.items[currentItemIndex].consumable) { pInv.items[currentItemIndex].count--; }
+						Math::PushBackLog(&game.actionLog, pInv.items[currentItemIndex].consumeTxt);
+					}
+					else
+					{
+						Math::PushBackLog(&game.actionLog, "You can't consume " + pInv.items[currentItemIndex].name + ".");
+					}
+					useBool = !useBool;
+				}
+				if (ImGui::Button("Body (Self)"))
+				{
+					if (pInv.AttemptAction(use, &pInv.items[currentItemIndex], &player))
+					{
+						if (pInv.items[currentItemIndex].consumable) { pInv.items[currentItemIndex].count--; }
+						Math::PushBackLog(&game.actionLog, pInv.items[currentItemIndex].useTxt);
+					}
+					else 
+					{
+						Math::PushBackLog(&game.actionLog, "You can't use " + pInv.items[currentItemIndex].name + ".");
+					}
+					useBool = !useBool;
+				}
+			}
 
 			ImGui::End();
 		}
@@ -263,6 +300,7 @@ public:
 			//FPS
 			if (counter == 30) { lastFPS = Engine::Instance().getFPS(); counter = 0; }
 			else { counter++; }
+			ImGui::Text(("Current World Time: " + std::to_string(game.worldTime)).c_str());
 			ImGui::Text(("FPS: " + std::to_string(lastFPS)).c_str());
 			//ms left until next tick
 			ImGui::Text(("Time until next update:"));

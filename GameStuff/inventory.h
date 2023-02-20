@@ -1,5 +1,9 @@
 #pragma once
 #include "antibox/core/mathlib.h"
+#include "json/json.h"
+#include <fstream>
+using json = nlohmann::json;
+
 
 class Inventory
 {
@@ -50,6 +54,79 @@ public:
 				}
 			}
 		}
+		else if (tile->collectible) 
+		{
+			AddItem(grass);
+			return true;
+		}
 		return false;
 	}
+
+	bool AttemptAction(Action act, Item* item, Player* p)
+	{
+		if (item->count <= 0) { return false; }
+
+		switch (act) {
+		case use:
+			switch (item->use.onBodyUse)
+			{
+			case heal:
+				p->health += 5.f;
+				break;
+			case quench:
+				if (item->holdsLiquid && item->liquidAmount > 0.f)
+				{
+					p->coveredIn = item->coveredIn;
+					item->liquidAmount -= 25.f;
+				}
+				else
+				{
+					return false;
+				}
+				p->thirst += 1.5f;
+				break;
+			case saturate:
+				p->hunger += 1.5f;
+				break;
+			case damage:
+				p->health -= 5.f;
+				break;
+			default:
+				return false;
+			}
+			return true;
+			break;
+		case consume:
+			switch (item->use.onConsume)
+			{
+			case heal:
+				p->health += 5.f;
+				break;
+			case quench:
+				if (item->holdsLiquid && item->liquidAmount > 0.f)
+				{
+					item->liquidAmount -= 25.f;
+					p->thirst += 1.5f;
+					p->thirst = std::min(100.f, p->thirst);
+				}
+				else 
+				{
+					return false;
+				}
+				break;
+			case saturate:
+				p->hunger += 1.5f;
+				break;
+			case damage:
+				p->health -= 5.f;
+				break;
+			default:
+				return false;
+			}
+			return true;
+			break;
+		}
+		return false;
+	}
+
 };
