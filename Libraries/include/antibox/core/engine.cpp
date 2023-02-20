@@ -25,11 +25,11 @@ namespace antibox
 	
 
 	void Engine::Initialize() { //Do all the initialization
+		srand((unsigned)time(NULL)); //for rng
 		WindowProperties props = mApp->GetWindowProperties();
 		window->init(props);
 		mRenderManager.Init();
 		mApp->Init();
-		srand((unsigned)time(NULL)); //for rng
 	}
 
 	//void Engine::AddToObjects(GameObject* go) {

@@ -23,11 +23,20 @@ public:
 
 	void AttemptAttack(Entity* ent);
 
-	bool NearNPC() { return mainMap.NearNPC(mPlayer); }
+	//bool NearNPC() { return mainMap.NearNPC(mPlayer); }
 
 	void SpawnEntity(Entity* curNPC);
 
 	void MovePlayer(int dir);
+
+	void SetTile(Vector2_I tile, int newTile);
+
+	std::string GetTileChar(Tile tile);
+
+	std::string GetTileChar(Vector2_I tile);
+
+	ImVec4 GetTileColor(Tile tile);
+	ImVec4 GetTileColor(Vector2_I tile);
 };
 
 
@@ -115,7 +124,8 @@ void GameManager::UpdateEntities() {
 	tickCount += antibox::Engine::Instance().deltaTime();
 	if (tickCount >= tickRate)
 	{
-		mPlayer.coveredIn = 0;
+		mPlayer.thirst -= 0.05f;
+		mPlayer.coveredIn = water;
 		mainMap.ClearEntities(mPlayer);
 		tickCount = 0;
 		for (int i = 0; i < mainMap.CurrentChunk().entities.size(); i++)
@@ -147,3 +157,96 @@ void GameManager::AttemptAttack(Entity* ent)
 		mPlayer.health -= 10;
 	}
 }
+
+void GameManager::SetTile(Vector2_I tile, int newTile) {
+	mainMap.CurrentChunk().localCoords[tile.x][tile.y].id = newTile;
+}
+
+std::string GameManager::GetTileChar(Tile tile) {
+	
+	if (tile.entity != nullptr) 
+	{
+		switch (tile.entity->entityID) 
+		{
+		case ID_ZOMBIE:
+			return ENT_ZOMBIE;
+			break;
+		case ID_CHICKEN:
+			return ENT_CHICKEN;
+			break;
+		}
+	}
+	switch (tile.id) {
+	case 0:
+		return TILE_NULL;
+		break; 
+	case 1:
+		return TILE_GRASS;
+		break;
+	case 2:
+		return TILE_DIRT;
+		break;
+	case 3:
+		return TILE_FLOWER;
+		break;
+	case 4:
+		return TILE_FIRE;
+		break;
+	default:
+		return TILE_NULL;
+		break;
+	}
+}
+
+std::string GameManager::GetTileChar(Vector2_I tile) { return GameManager::GetTileChar(mainMap.CurrentChunk().localCoords[tile.x][tile.y]); }
+
+ImVec4 GameManager::GetTileColor(Tile tile) {
+	if (tile.entity != nullptr)
+	{
+		switch (tile.entity->entityID)
+		{
+		case ID_ZOMBIE:
+			return ImVec4{ 1,0,0,1 };
+			break;
+		case ID_CHICKEN:
+			return ImVec4{ 1,1,1,1 };
+			break;
+		}
+	}
+
+	switch (tile.liquid) {
+	case water:
+		return ImVec4{ 0.25, 0.25, 1, 1 };
+		break;
+	case nothing:
+		break;
+	}
+
+	switch (tile.id) {
+	case 0:
+		return ImVec4{0.75, 0.75, 0.75, 1};
+		break;
+	case 2:
+		return ImVec4{ 1, 0.45, 0, 1 };
+		break;
+	case 3:
+		return ImVec4{ 0.65, 1, 0.1, 1 };
+		break;
+	case 4:
+		return ImVec4{ 1, 0.35, 0, 1 };
+		break;
+	case 35:
+		return ImVec4{ 1, 1, 0, 1 };
+		break;
+	case 36:
+		return ImVec4{ 0.75, 0, 0, 1 };
+		break;
+	case 37:
+		return ImVec4{ 1, 1, 1, 1 };
+		break;
+	default:
+		return ImVec4{ 0, 1, 0, 1 };
+		break;
+	}
+}
+ImVec4 GameManager::GetTileColor(Vector2_I tile) { return GameManager::GetTileColor(mainMap.CurrentChunk().localCoords[tile.x][tile.y]); }

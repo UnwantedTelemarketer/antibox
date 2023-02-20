@@ -10,6 +10,11 @@ void Console::Log(uint32_t message, textColor type = "\033[0;37m")
 {
 	std::cout << "[ Line " << __LINE__ << " ]: " << type << std::to_string(message) << "\033[0m\n" << std::endl;
 }
+void Console::Log(bool tf, textColor type = "\033[0;37m")
+{
+	std::string message = tf ? "True" : "False";
+	std::cout << "[ Line " << __LINE__ << " ]: " << type << message << "\033[0m\n" << std::endl;
+}
 void Console::Log(Vector2 vec, textColor type = "\033[0;37m")
 {
 	std::cout << "[ Line " << __LINE__ << " ]: " << type << "Vector2 {" << std::to_string(vec.x) + ", " + std::to_string(vec.y) << "}" << "\033[0m\n" << std::endl;

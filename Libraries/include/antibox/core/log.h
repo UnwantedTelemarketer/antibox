@@ -9,6 +9,7 @@ namespace Console {
 	//Logs a message to the command prompt. ERROR is red, WARNING is yellow, SUCCESS is green, LOG is white.
 	void Log(std::string message, textColor type);
 	void Log(uint32_t message, textColor type);
+	void Log(bool tf, textColor type);
 	void Log(unsigned char* message, textColor type);
 	void Log(Vector2 vec, textColor type);
 	void Log(Vector2_I vec, textColor type);

@@ -13,7 +13,7 @@ private:
 	WindowProperties GetWindowProperties() { 
 		WindowProperties props;
 		
-		props.imguiProps = { true, true, false, UNIFONT};
+		props.imguiProps = { true, true, false, CASCADIA};
 		props.w = 1280;
 		props.h = 720;
 		props.vsync = 1;
@@ -24,14 +24,15 @@ private:
 	int counter = 0;
 public:
 	//UI stuff
-	bool statsOpen, debugOpen, interacting;
-	Vector2_I selectedTile;
+	bool statsOpen, debugOpen, interacting, itemMenu, navInv;
+	Tile* selectedTile = nullptr;
+	int currentItemIndex = 0;
 	std::string openClose;
 	//Game Stuff
 	GameManager game;
 	Inventory pInv;
-	Entity zombo = { 100, "Zombie", Stationary, true };
-	Entity chicken = { 25, "Chicken", Wander, false };
+	Entity zombo = { 100, "Zombie", ID_ZOMBIE, Stationary, true };
+	Entity chicken = { 25, "Chicken", ID_CHICKEN, Wander, false };
 	Player& player = game.mPlayer;
 	float& health = game.mPlayer.health;
 	Map& map = game.mainMap;
@@ -40,6 +41,7 @@ public:
 		health = 100.0f;
 		statsOpen = true;
 		openClose = "Close Stats";
+		navInv = false;
 		game.Setup(10, 10, 0.5f);
 		game.SpawnEntity(&zombo);
 		game.SpawnEntity(&chicken);
@@ -52,85 +54,98 @@ public:
 		if (Input::KeyDown(KEY_UP)) {
 			if (interacting)
 			{
-				selectedTile = { player.coords.y - 1, player.coords.x };
+				selectedTile = { map.TileAtPos(Vector2_I{ player.coords.y - 1, player.coords.x }) };
 				interacting = false;
 				return;
 			}
-			selectedTile = { -1,-1 };
+			else if (navInv) 
+			{
+				currentItemIndex--;
+				currentItemIndex = currentItemIndex < 0 ? 0 : currentItemIndex;
+				return;
+			}
+			selectedTile = nullptr;
 			game.MovePlayer(MAP_UP);
 		}
 		else if (Input::KeyDown(KEY_DOWN)) {
 			if (interacting)
 			{
-				selectedTile = { player.coords.y + 1, player.coords.x };
+				selectedTile = { map.TileAtPos(Vector2_I{ player.coords.y + 1, player.coords.x }) };
 				interacting = false;
 				return;
 			}
-			selectedTile = { -1,-1 };
+			else if (navInv)
+			{
+				currentItemIndex++;
+				if(currentItemIndex > pInv.items.size() - 1) currentItemIndex = pInv.items.size() - 1;
+				return;
+			}
+			selectedTile = nullptr;
 			game.MovePlayer(MAP_DOWN);
 		}
 		else if (Input::KeyDown(KEY_LEFT)) {
 			if (interacting) 
 			{
-				selectedTile = { player.coords.y, player.coords.x - 1 };
+				selectedTile = { map.TileAtPos(Vector2_I{ player.coords.y, player.coords.x - 1}) };
 				interacting = false;
 				return;
 			}
-			selectedTile = { -1,-1 };
+			selectedTile = nullptr;
 			game.MovePlayer(MAP_LEFT);
 		}
 		else if (Input::KeyDown(KEY_RIGHT)) {
 			if (interacting)
 			{
-				selectedTile = { player.coords.y, player.coords.x + 1 };
+				selectedTile = { map.TileAtPos(Vector2_I{ player.coords.y, player.coords.x + 1}) };
 				interacting = false;
 				return;
 			}
-			selectedTile = { -1,-1 };
+			selectedTile = nullptr;
 			game.MovePlayer(MAP_RIGHT);
 		}
 		else if (Input::KeyDown(KEY_P))
 		{
 			debugOpen = !debugOpen;
 		}
+		else if (Input::KeyDown(KEY_I))
+		{
+			navInv = !navInv;
+			itemMenu = navInv;
+		}
+		else if (Input::KeyDown(KEY_M))
+		{
+			pInv.AddItem({ "Canteen (Empty)", 1, false, true, 0 });
+		}
+		else if (Input::KeyDown(KEY_L))
+		{
+			pInv.AddItem({ "Grass", 12, true, false, 1 });
+		}
 		else if (Input::KeyDown(KEY_E))
 		{
-			Math::PushBackLog(&game.actionLog, "Which direction will you interact with?");
-			interacting = true;
+			if (!navInv) 
+			{
+				Math::PushBackLog(&game.actionLog, "Which direction will you interact with?");
+				interacting = true;
+			}
 		}
 	}
 
 	void ImguiRender() override
 	{
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
 		//------Map-------
 		ImGui::Begin("Map");
 		ImGui::PushFont(Engine::Instance().getFont());
 		for (int i = 0; i < CHUNK_WIDTH; i++) {
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
-				//ImGui::Text(game.GetTileChar());
-				switch (game.mainMap.entityLayer.localCoords[i][j]) {
-				case 0:
-					ImGui::TextColored(ImVec4(pInv.clothes.x, pInv.clothes.y, pInv.clothes.z, 1), ENT_PLAYER);
-					break;
-				case 2:
-					ImGui::TextColored(ImVec4(0, 1, 1, 1), TILE_WATER);
-					break;
-				case 3:
-					ImGui::TextColored(ImVec4(0.5, 0.9, 0.15, 1), TILE_FLOWER);
-					break;
-				case 35:
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), ENT_HUMAN);
-					break;
-				case 36:
-					ImGui::TextColored(ImVec4(0.75f, 0, 0, 1), ENT_ZOMBIE);
-					break;
-				case 37:
-					ImGui::TextColored(ImVec4(1, 1, 1, 1), ENT_CHICKEN);
-					break;
-				default:
-					ImGui::TextColored(ImVec4(0, 1, 0, 1), TILE_GRASS);
-					break;
+				if (Vector2_I{ player.coords.x,player.coords.y } == Vector2_I{ j,i })
+				{
+					ImGui::Text("@");
+				}
+				else {
+					ImGui::TextColored(game.GetTileColor(map.CurrentChunk().localCoords[i][j]),
+									   game.GetTileChar(map.CurrentChunk().localCoords[i][j]).c_str());
 				}
 				ImGui::SameLine();
 			}
@@ -138,6 +153,7 @@ public:
 		}
 		ImGui::PopFont();
 		ImGui::End();
+
 		//------Action Log----
 		ImGui::Begin("Action Log");
 			for (int i = 0; i < game.actionLog.size(); i++)
@@ -145,6 +161,7 @@ public:
 				ImGui::Text(game.actionLog[i].c_str());
 			}
 		ImGui::End();
+
 		//------Combat------
 		ImGui::Begin("Interact");
 		if (ImGui::Button(openClose.c_str())) {
@@ -152,48 +169,94 @@ public:
 			openClose = statsOpen ? "Close Stats" : "Open Stats";
 		}
 		ImGui::End();
+
 		//------Stats------
 		if(statsOpen){
 			ImGui::Begin("Stats");
 				ImGui::Text("Health");
-				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, (ImVec4)ImColor::HSV(0.0f,1.0f, 1.0f));
-				ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{1,0,0,1});
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0.45,0,0,1 });
 				ImGui::ProgressBar(game.mPlayer.health / 100, ImVec2(0.0f, 0.0f));
 				ImGui::PopStyleColor(2);
 
-				if (player.coveredIn == 1) {
+
+				ImGui::Text("Thirst");
+				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{ 0,0.5,1,1 });
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0,0,0.45,1 });
+				ImGui::ProgressBar(game.mPlayer.thirst / 100, ImVec2(0.0f, 0.0f));
+				ImGui::PopStyleColor(2);
+
+				if (player.coveredIn == water) {
 					ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(1.5f, 1.0f, 1.0f));
 					ImGui::Text("Soaked!");
 					ImGui::PopStyleColor(1);
 				}
 			ImGui::End();
 		}
+
 		//------Inventory------
 		ImGui::Begin("Inventory");
 		for (int i = 0; i < pInv.items.size(); i++)
 		{
-			ImGui::Text(pInv.items[i].name.c_str()); ImGui::SameLine();
-			ImGui::Text(CHAR_ARRAY(pInv.items[i].count));
+			if (i == currentItemIndex && navInv) {
+				ImGui::Text("> "); ImGui::SameLine();
+			}
+			ImGui::Text(pInv.items[i].name.c_str()); ;
+			if (pInv.items[i].count > 0) 
+			{
+				ImGui::SameLine(); ImGui::Text(CHAR_ARRAY(pInv.items[i].count));
+			}
 		}
 		ImGui::End();
-		//------Inventory------
-		if (selectedTile != Vector2_I{ -1, -1}) 
+
+		//------Interaction------
+		if (selectedTile != nullptr) 
 		{
-			ImGui::Begin("Selected Tile");
+			ImGui::Begin("Selected Block");
+			ImGui::TextColored(game.GetTileColor(*selectedTile), game.GetTileChar(*selectedTile).c_str());
+			if (ImGui::Button("Collect")) {
+				if (pInv.AttemptCollect(selectedTile)) 
+				{
+					selectedTile->liquid = nothing;
+					Math::PushBackLog(&game.actionLog, "You collect the water off the ground.");
+				}
+				else {
+
+					Math::PushBackLog(&game.actionLog, "You can't collect that.");
+				}
+				selectedTile = nullptr;
+			}
 			ImGui::End();
 		}
-		//------NPC------
-		if (game.NearNPC()) {
-			ImGui::Begin("Current NPC");
-				ImGui::Text(zombo.name);
-				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, (ImVec4)ImColor::HSV(0.0f, 1.0f, 1.0f));
-				ImGui::PushStyleColor(ImGuiCol_FrameBg, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
-				ImGui::ProgressBar(zombo.health / 100, ImVec2(0.0f, 0.0f));
+		//------item------
+		if (itemMenu)
+		{
+			ImGui::Begin("Current Item");
+			ImGui::Text(pInv.items[currentItemIndex].name.c_str());
+
+			
+			if (!pInv.items[currentItemIndex].stackable) { ImGui::TextColored(ImVec4{1,0,0,1},"[DOES NOT STACK]"); }
+			
+			if (pInv.items[currentItemIndex].holdsLiquid) {
+				ImGui::Text("Liquid:");
+				ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4{ 0,0.5,1,1 });
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{ 0,0,0.45,1 });
+
+				ImGui::ProgressBar(pInv.items[currentItemIndex].liquidAmount / 100, ImVec2(0.0f, 0.0f));
 				ImGui::PopStyleColor(2);
-				ImGui::Text("");
-				ImGui::Text("Graaah.");
+			}
+			if (pInv.items[currentItemIndex].stackable) {
+				ImGui::Text("[ Holding x");
+				ImGui::SameLine(); 
+				ImGui::Text(std::to_string(pInv.items[currentItemIndex].count).c_str());
+				ImGui::SameLine();
+				ImGui::Text("]");
+			}
+			
+
 			ImGui::End();
 		}
+
 		//------DEBUG------
 		if (debugOpen) {
 			ImGui::Begin("Debug Window");
