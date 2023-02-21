@@ -1,9 +1,13 @@
 #pragma once
 #include "entities.h"
 
+#define ITEM_CONTAINER 1
+#define ITEM_BANDAGE 2
+#define ITEM_GRASS 3
+
 Item canteen = 
 {   "Canteen (Empty)",
-	1,
+	ITEM_CONTAINER,
 	false,
 	true,
 	false,
@@ -15,19 +19,19 @@ Item canteen =
 
 Item bandage = 
 {   "Sterile Bandage",
-	2,
+	ITEM_BANDAGE,
 	true,
 	false,
 	true,
 	{none, heal},
 	5,
-	"You eat the bandage.",
+	"You choke down a bandage.",
 	"You wrap a bandage on yourself." 
 };
 
 Item grass =
 {   "Grass",
-	3,
+	ITEM_GRASS,
 	true,
 	false,
 	true,

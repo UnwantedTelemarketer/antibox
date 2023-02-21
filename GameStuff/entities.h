@@ -87,7 +87,3 @@ struct Item {
 
 #define ENT_HUMAN "&"
 #define ID_HUMAN 3
-
-#define ITEM_CONTAINER 1
-#define ITEM_BANDAGE 2
-#define ITEM_GRASS 3

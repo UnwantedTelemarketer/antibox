@@ -11,7 +11,7 @@ private:
 	WindowProperties GetWindowProperties() { 
 		WindowProperties props;
 		
-		props.imguiProps = { true, true, false, UNIFONT};
+		props.imguiProps = { true, true, false, CASCADIA};
 		props.w = 1280;
 		props.h = 720;
 		props.vsync = 1;
