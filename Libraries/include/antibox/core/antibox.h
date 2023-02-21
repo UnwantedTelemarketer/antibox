@@ -18,15 +18,16 @@
 //example:
 //class ClientApp : public antibox::App {};
 //antibox::App* CreateApp() { return new ClientApp(); }
+
 antibox::App* CreateApp();
 
 int main() {
-	antibox::App* app = CreateApp();
 	antibox::Engine& engine = antibox::Engine::Instance();
-	//antibox::Console& ConsoleIO = antibox::Console::Instance();
+	antibox::App* app = CreateApp(); //then run their app
 
 	engine.Run(app);
 	delete app;
+
 	return 0;
 }
 

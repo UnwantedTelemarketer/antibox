@@ -163,7 +163,7 @@ public:
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
 				int currentTile = Math::RandNum(10);
 				if (currentTile > 9) { chunk->localCoords[i][j] = Tile_Puddle; }
-				else if (currentTile > 7) { chunk->localCoords[i][j] = Tile_TallGrass; }
+				else if (currentTile > 8) { chunk->localCoords[i][j] = Tile_TallGrass; }
 				else { chunk->localCoords[i][j] = Tile_Grass; }
 			}
 		}

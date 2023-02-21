@@ -18,10 +18,16 @@ struct Entity {
 
 };
 
+//What the effect is and how much it does.
+struct EffectAmount {
+	ConsumeEffect effect = none;
+	float amount = 0.f;
+};
+
 //Consume, BodyUse
 struct ActionEffect {
-	ConsumeEffect onConsume;
-	ConsumeEffect onBodyUse;
+	EffectAmount onConsume;
+	EffectAmount onBodyUse;
 };
 
 struct Player {
@@ -52,8 +58,8 @@ struct Item {
 	std::string consumeTxt, useTxt;
 
 	float weight;
-	Liquid coveredIn = nothing; //liquids
 	float liquidAmount = 0.f;
+	Liquid coveredIn = nothing; //liquids
 };
 
 #define TILE_LIQUID "~"

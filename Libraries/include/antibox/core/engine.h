@@ -32,8 +32,7 @@ namespace antibox {
 
 		
 		void End(); //Called when window is closed
-		//void EndShader();
-		//void AddToObjects(GameObject* go);
+		void CloseApp() { closeApp = true; } //close the loop
 
 		void Run(App* app); //The constant loop every frame
 		inline App& GetApp() { return *mApp; } //Returns App
@@ -57,6 +56,7 @@ namespace antibox {
 		double fps;
 		double ms;
 		unsigned int counter = 0;
+		bool closeApp;
 
 		void Update(); //Self Explanatory
 		void Render();

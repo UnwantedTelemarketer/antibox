@@ -32,20 +32,16 @@ namespace antibox
 		mApp->Init();
 	}
 
-	//void Engine::AddToObjects(GameObject* go) {
-	//	gos.push_back(go);
-	//}
 
 	void Engine::Run(App* app) { //This is what loops forever until the window is closed
 		if (mApp == nullptr) { mApp = app; }//If we dont have an app, set the private app to the one submitted from wherever run is called.
 		else { return; } //if there is no app anywhere, just dont run
-		Initialize(); //
-		/*for (int i = 0; i < gos.size(); i++) //Update each sprite after the user wants to mess with it
+		Initialize();
+
+		closeApp = false;
+		while (!closeApp) //This is the window loop from GLFW.
 		{
-			gos[i]->CreateSprite();
-		}*/
-		while (!glfwWindowShouldClose(window->glfwin())) //This is the window loop from GLFW.
-		{
+			closeApp = glfwWindowShouldClose(window->glfwin());
 			Update(); //Run the Update function
 			Render(); //Run the Render Function
 		}
@@ -82,6 +78,7 @@ namespace antibox
 	void Engine::End() {
 		//client shutdown (?)
 		mApp->Shutdown(); //Users shutdown function
+		mApp = nullptr;
 		mRenderManager.Shutdown();
 		glfwDestroyWindow(window->glfwin());
 		glfwTerminate();

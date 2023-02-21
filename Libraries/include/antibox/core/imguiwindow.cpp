@@ -9,7 +9,6 @@ namespace antibox
 	{
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigWindowsMoveFromTitleBarOnly = props.MoveTitleBarOnly;
 		if(props.DockingEnabled) {
@@ -20,9 +19,10 @@ namespace antibox
 		}
 		(void)io; 
 		io.Fonts->AddFontDefault();
-		mainFont = io.Fonts->AddFontFromFileTTF(props.fontPath,props.fontSize, NULL, io.Fonts->GetGlyphRangesCyrillic());
+		mainFont = io.Fonts->AddFontFromFileTTF(props.fontPath, props.fontSize, NULL, io.Fonts->GetGlyphRangesCyrillic());
 		IM_ASSERT(mainFont != NULL);
 		ImGui::StyleColorsDark();
+
 		ImGui_ImplGlfw_InitForOpenGL(Engine::Instance().GetWindow()->glfwin(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
 	}

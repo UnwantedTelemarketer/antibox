@@ -22,6 +22,7 @@ public:
 	void Setup(int x, int y, float tick);
 
 	void UpdateEntities();
+	void UpdateTick();
 
 	void DoBehaviour(Entity* ent);
 
@@ -124,7 +125,7 @@ void GameManager::MovePlayer(int dir) {
 	//if (mainMap.NearNPC(player)) { Math::PushBackLog(&actionLog, "Howdy!"); }
 }
 
-void GameManager::UpdateEntities() {
+void GameManager::UpdateTick() {
 	tickCount += antibox::Engine::Instance().deltaTime();
 	if (tickCount >= tickRate)
 	{
@@ -137,6 +138,12 @@ void GameManager::UpdateEntities() {
 		else { worldTime -= 0.5; }
 		if (worldTime > 7 || worldTime <= 1) { forwardTime = !forwardTime; }*/
 
+		UpdateEntities();
+	}
+}
+
+void GameManager::UpdateEntities() {
+	
 		mainMap.ClearEntities(mPlayer);
 		tickCount = 0;
 		for (int i = 0; i < mainMap.CurrentChunk().entities.size(); i++)
@@ -155,7 +162,6 @@ void GameManager::UpdateEntities() {
 
 		}
 		mainMap.PlaceEntities(mPlayer);
-	}
 }
 
 void GameManager::AttemptAttack(Entity* ent)

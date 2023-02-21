@@ -32,7 +32,7 @@ public:
 		{
 			if (items[i].id == itemID)
 			{
-				if (needEmpty && items[i].coveredIn != nothing) { continue; }
+				if (items[i].coveredIn != nothing && items[i].liquidAmount >= 100.f) { continue; }
 				*itemIndex = &items[i];
 				return true;
 			}
@@ -49,7 +49,6 @@ public:
 				{
 					item->coveredIn = tile->liquid;
 					item->liquidAmount += 25.f;
-					item->name = item->liquidAmount != 100.f ? "Canteen (Partially Full)" : "Canteen (Full)";
 					return true;
 				}
 			}
@@ -65,13 +64,14 @@ public:
 	bool AttemptAction(Action act, Item* item, Player* p)
 	{
 		if (item->count <= 0) { return false; }
-
-		switch (act) {
+		float amount;
+		switch (act) {										//Check if we are consuming or using
 		case use:
-			switch (item->use.onBodyUse)
+			amount = item->use.onBodyUse.amount;
+			switch (item->use.onBodyUse.effect)				//If we are using, check what effect this item has on use
 			{
 			case heal:
-				p->health += 5.f;
+				p->health += amount;
 				break;
 			case quench:
 				if (item->holdsLiquid && item->liquidAmount > 0.f)
@@ -83,30 +83,31 @@ public:
 				{
 					return false;
 				}
-				p->thirst += 1.5f;
+				p->thirst += amount;
 				break;
 			case saturate:
-				p->hunger += 1.5f;
+				p->hunger += amount;
 				break;
 			case damage:
-				p->health -= 5.f;
+				p->health -= amount;
 				break;
 			default:
 				return false;
-			}
+			}    
 			return true;
 			break;
 		case consume:
-			switch (item->use.onConsume)
+			amount = item->use.onConsume.amount;
+			switch (item->use.onConsume.effect)				//If we are consuming, check what effect this item has on consume
 			{
 			case heal:
-				p->health += 5.f;
+				p->health += amount;
 				break;
 			case quench:
 				if (item->holdsLiquid && item->liquidAmount > 0.f)
 				{
 					item->liquidAmount -= 25.f;
-					p->thirst += 1.5f;
+					p->thirst += amount;
 					p->thirst = std::min(100.f, p->thirst);
 				}
 				else 
@@ -115,10 +116,10 @@ public:
 				}
 				break;
 			case saturate:
-				p->hunger += 1.5f;
+				p->hunger += amount;
 				break;
 			case damage:
-				p->health -= 5.f;
+				p->health -= amount;
 				break;
 			default:
 				return false;

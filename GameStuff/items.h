@@ -6,15 +6,27 @@
 #define ITEM_GRASS 3
 
 Item canteen = 
-{   "Canteen (Empty)",
+{   "Canteen",							   //Name
+	ITEM_CONTAINER,						   //ID
+	false,								   //Stackable
+	true,								   //Holds Liquid
+	false,								   //Consumable
+	ActionEffect{{quench, 5.f}, {quench}}, //OnConsume and OnBodyUse
+	1,									   //Amount
+	"You drink from the canteen.",		   //OnConsume message
+	"You pour the canteen on yourself."	   //OnBodyUse message
+}; 
+
+Item jar =
+{	"Mason Jar",
 	ITEM_CONTAINER,
 	false,
 	true,
 	false,
-	ActionEffect{quench, quench},
+	{{quench, 4.f}, {quench}},
 	1,
-	"You drink from the canteen.",
-	"You pour the canteen on yourself." 
+	"You drink from the mason jar.",
+	"You pour out the contents of the mason jar on yourself."
 };
 
 Item bandage = 
@@ -23,10 +35,10 @@ Item bandage =
 	true,
 	false,
 	true,
-	{none, heal},
+	{{none}, {heal, 5.f}},
 	5,
-	"You choke down a bandage.",
-	"You wrap a bandage on yourself." 
+	"You eat bandage.",
+	"You wrap a bandage around your wound." 
 };
 
 Item grass =
@@ -35,19 +47,19 @@ Item grass =
 	true,
 	false,
 	true,
-	{saturate, none},
+	{{saturate, 1.f}, {heal, 1.f}},
 	1,
 	"You eat the grass.",
-	"You wrap grass around yourself."
+	"You wrap grass around your wound."
 };
 
 Tile Tile_Grass =
 {
-	ID_GRASS,
-	nothing,
-	nullptr,
-	false,
-	ID_GRASS
+	ID_GRASS, //Starting Block
+	nothing,  //Liquid
+	nullptr,  //Entity
+	false,	  //Collectible
+	ID_GRASS  //Block after collection
 };
 
 Tile Tile_TallGrass =

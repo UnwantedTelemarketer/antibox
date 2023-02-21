@@ -5,13 +5,12 @@
 
 using namespace antibox;
 
-
 class Caves : public App {
 private:
 	WindowProperties GetWindowProperties() { 
 		WindowProperties props;
 		
-		props.imguiProps = { true, true, false, CASCADIA};
+		props.imguiProps = { true, true, false, UNIFONT };
 		props.w = 1280;
 		props.h = 720;
 		props.vsync = 1;
@@ -26,11 +25,10 @@ public:
 	Tile* selectedTile = nullptr;
 	int currentItemIndex = 0;
 	std::string openClose;
+
 	//Game Stuff
 	GameManager game;
 	Inventory pInv;
-	//Entity zombo = { 100, "Zombie", ID_ZOMBIE, Stationary, true };
-	//Entity chicken = { 25, "Chicken", ID_CHICKEN, Wander, false };
 	Player& player = game.mPlayer;
 	float& health = game.mPlayer.health;
 	Map& map = game.mainMap;
@@ -41,16 +39,15 @@ public:
 		openClose = "Close Stats";
 		navInv = false;
 		game.Setup(10, 10, 0.5f);
-		//game.SpawnEntity(&zombo);
-		//game.SpawnEntity(&chicken);
 
 		pInv.clothes = { 0.75, 0.45, 0.15 };
 		pInv.AddItem(canteen);
 		pInv.AddItem(bandage);
+		pInv.AddItem(jar);
 	}
 
 	void Update() {
-		game.UpdateEntities();
+		game.UpdateTick();
 		if (Input::KeyDown(KEY_UP)) {
 			if (interacting)
 			{
@@ -148,10 +145,12 @@ public:
 
 		//------Action Log----
 		ImGui::Begin("Action Log");
+		ImGui::PushFont(Engine::Instance().getFont());
 			for (int i = 0; i < game.actionLog.size(); i++)
 			{
 				ImGui::Text(game.actionLog[i].c_str());
 			}
+		ImGui::PopFont();
 		ImGui::End();
 
 		//------Combat------
@@ -319,125 +318,6 @@ public:
 			
 			ImGui::End();
 		}
-	}
-};
-
-class Tanks : public App
-{
-private:
-	std::shared_ptr<GameObject> cookie;
-	double mouseX, mouseY;
-	std::shared_ptr<Texture> mTex;
-	std::shared_ptr<antibox::Mesh> mMesh;
-	std::shared_ptr<antibox::Shader> mShader;
-
-public:
-	WindowProperties GetWindowProperties() {
-		WindowProperties props;
-		props.cc = { 0.2f,0.2f,0.2f,1.f };
-		props.w = 800;
-		props.h = 600;
-		return props;
-	}
-
-
-	void Init() override 
-	{
-
-		glm::vec2 size{ 0.5f,0.5f };
-		glm::vec2 pos{ 0.f,0.f };
-		
-		mTex = std::make_shared<Texture>("nothing");
-
-		cookie = Factory::CreateSprite(pos);
-	}
-
-	void Update() override 
-	{
-		if (Input::KeyHeldDown(KEY_W)) 
-		{
-			cookie->Move({ 0.0f, -0.025f });
-		}
-		if (Input::KeyHeldDown(KEY_S))
-		{
-			cookie->Move({ 0.0f, 0.025f });
-		}
-		if (Input::KeyHeldDown(KEY_A))
-		{
-			cookie->Move({ -0.025f, 0.0f });
-		}
-		if (Input::KeyHeldDown(KEY_D))
-		{
-			cookie->Move({ 0.025f, 0.0f });
-		}
-		cookie->Update();
-	}
-
-	void Render() override 
-	{
-		cookie->Render();
-	}
-
-	void ImguiRender() override
-	{
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-		if (ImGui::Begin("Game View"))
-		{
-			PRINTSCREEN;
-		}
-		ImGui::End();
-	}
-
-	void Shutdown() override {
-
-	}
-};
-
-class DND : public App{
-
-	int dice;
-	int dice_amount;
-	bool disadvantage;
-	int dice_dis;
-	
-
-	WindowProperties GetWindowProperties() {
-		WindowProperties props;
-		props.w = 800;
-		props.h = 600;
-		props.title = "D&D Character Interaction";
-		return props;
-	}
-
-	void Init() override
-	{
-		dice_amount = 20;
-	}
-	void Update() override
-	{
-
-	}
-	void ImguiRender() override
-	{
-		ImGui::Begin("Roll Dice"); {
-			if (ImGui::RadioButton("Two Dice", disadvantage))
-			{
-				disadvantage = !disadvantage;
-			}
-			ImGui::SliderInt(CHAR_ARRAY(dice_amount), &dice_amount, 0, 60);
-			if (ImGui::Button(("Roll D" + std::to_string(dice_amount)).c_str()))
-			{
-				dice = Math::RandInt(dice_amount);
-				dice_dis = Math::RandInt(dice_amount);
-			}
-			ImGui::Text(std::to_string(dice).c_str());
-			if (disadvantage) {
-				ImGui::Text(CHAR_ARRAY(dice_dis));
-			}
-		
-		ImGui::End(); }
-
-		ImGui::Begin("");
 	}
 };
 
