@@ -132,6 +132,10 @@ public:
 				{
 					ImGui::Text("@");
 				}
+				else if (map.effectLayer.localCoords[i][j] == 15) 
+				{
+					ImGui::TextColored(ImVec4{ 1,0,1,1 }, "X");
+				}
 				else {
 					ImGui::TextColored(game.GetTileColor(map.CurrentChunk().localCoords[i][j]),
 									   game.GetTileChar(map.CurrentChunk().localCoords[i][j]).c_str());

@@ -5,6 +5,7 @@
 #include "items.h"
 #include "inventory.h"
 #include <algorithm>
+#include <cmath>
 
 #define MAP_UP 1
 #define MAP_DOWN 2
@@ -34,8 +35,9 @@ struct World
 class Map {
 public:
 	Vector2_I c_glCoords{ 2, 3 };
-	//T_Chunk entityLayer; //is the original chunk with entities placed over it
+	T_Chunk effectLayer; //is the original chunk with entities placed over it
 	World world; //keeps the original generated map so that tiles walked over wont be erased
+	std::vector<Vector2_I> line;
 
 	void CreateMap()
 	{
@@ -49,7 +51,6 @@ public:
 				SpawnChunkEntities(&world.chunks[x][y]);
 			}
 		}
-		
 	}
 
 	void SpawnChunkEntities(Chunk* chunk) 
@@ -97,7 +98,11 @@ public:
 		}
 		else if (p->coords.y > CHUNK_HEIGHT - 1) {
 			c_glCoords.y++;
-			if (c_glCoords.y >= CHUNK_WIDTH - 1) { c_glCoords.y = CHUNK_WIDTH - 1; goto offscreen; }
+			if (c_glCoords.y >= CHUNK_WIDTH - 1) 
+			{ 
+				c_glCoords.y = CHUNK_WIDTH - 1; 
+				goto offscreen; 
+			}
 			changed = true;
 			p->coords.y = 0;
 		}
@@ -169,16 +174,69 @@ public:
 		}
 	}
 
-	/*bool NearNPC(Player p) {
-		//check around player
-		if (entityLayer.localCoords[p.coords.y + 1][p.coords.x] == '#' ||
-			entityLayer.localCoords[p.coords.y - 1][p.coords.x] == '#' ||
-			entityLayer.localCoords[p.coords.y][p.coords.x + 1] == '#' ||
-			entityLayer.localCoords[p.coords.y][p.coords.x - 1] == '#') {
-			return true;
+	std::vector<Vector2_I> GetLine(Vector2_I startTile, Vector2_I endTile, int limit) {
+		std::vector<Vector2_I> lineList;
+		int x = startTile.x;
+		int y = startTile.y;
+		int w = endTile.x - x;
+		int h = endTile.y - y;
+		int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+		if (w < 0) dx1 = -1; else if (w > 0) dx1 = 1;
+		if (h < 0) dy1 = -1; else if (h > 0) dy1 = 1;
+		if (w < 0) dx2 = -1; else if (w > 0) dx2 = 1;
+		int longest = abs(w);
+		int shortest = abs(h);
+		if (!(longest > shortest))
+		{
+			longest = abs(h);
+			shortest = abs(w);
+			if (h < 0) dy2 = -1; else if (h > 0) dy2 = 1;
+			dx2 = 0;
 		}
-		return false;
-	}*/
+		int numerator = longest >> 1;
+		int limited = std::min(longest, limit);
+		for (int i = 0; i <= limited; i++)
+		{
+			//if (GetTileAtPos(new Vector2(x, y)) == null) return tilesLine;
+
+			lineList.push_back({x, y});
+
+			numerator += shortest;
+			if (!(numerator < longest))
+			{
+				numerator -= longest;
+				x += dx1;
+				y += dy1;
+			}
+			else
+			{
+				x += dx2;
+				y += dy2;
+			}
+		}
+		return lineList;
+	}
+
+	//Start tile, End tile
+	void DrawLine(Vector2_I sTile, Vector2_I eTile) 
+	{
+		ClearLine();
+		line = GetLine(sTile, eTile, 15);
+
+		for (int i = 0; i < line.size(); i++)
+		{
+			effectLayer.localCoords[line[i].x][line[i].y] = 15;
+		}
+	}
+
+	void ClearLine()
+	{
+		for (int i = 0; i < line.size(); i++)
+		{
+			effectLayer.localCoords[line[i].x][line[i].y] = 0;
+		}
+		line.clear();
+	}
 
 	void ClearEntities(Player p)
 	{

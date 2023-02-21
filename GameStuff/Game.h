@@ -106,6 +106,7 @@ void GameManager::SpawnEntity(Entity* ent) {
 }
 
 void GameManager::MovePlayer(int dir) {
+	mainMap.ClearLine();
 	switch (dir) {
 	case 1:
 		mainMap.MovePlayer(mPlayer.coords.x, mPlayer.coords.y - 1, &mPlayer, &actionLog);
@@ -122,6 +123,7 @@ void GameManager::MovePlayer(int dir) {
 	default:
 		break;
 	}
+	mainMap.DrawLine({ 5,5 }, { mPlayer.coords.y, mPlayer.coords.x });
 	//if (mainMap.NearNPC(player)) { Math::PushBackLog(&actionLog, "Howdy!"); }
 }
 

@@ -15,7 +15,6 @@ struct Entity {
 
 	Vector2_I coords;
 	int index; //in entity list
-
 };
 
 //What the effect is and how much it does.
