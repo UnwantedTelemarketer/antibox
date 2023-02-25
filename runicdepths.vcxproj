@@ -197,6 +197,7 @@
     <ClInclude Include="Libraries\include\antibox\core\log.h" />
     <ClInclude Include="Libraries\include\antibox\core\mathlib.h" />
     <ClInclude Include="Libraries\include\antibox\core\window.h" />
+    <ClInclude Include="Libraries\include\antibox\external\glad.h" />
     <ClInclude Include="Libraries\include\antibox\glad.h" />
     <ClInclude Include="Libraries\include\antibox\graphics\framebuffer.h" />
     <ClInclude Include="Libraries\include\antibox\graphics\helpers.h" />

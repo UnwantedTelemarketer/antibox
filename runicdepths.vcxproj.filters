@@ -1316,6 +1316,9 @@
     <ClInclude Include="GameStuff\items.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\include\antibox\external\glad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\include\antibox\core\default.frag" />

@@ -57,7 +57,7 @@ namespace antibox
 		if (timeDiff >= 1.0 / 60.0) {
 			fps = (1.0 / timeDiff) * counter;
 			ms = (timeDiff / counter) * 1000;
-			prevtime = crntTime; 	
+			prevtime = crntTime;
 			counter = 0;
 		} //report the framerate and ms between frames
 

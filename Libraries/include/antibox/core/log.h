@@ -17,7 +17,16 @@ namespace Console {
 	//std::string LogOut(std::string message, int type);
 }
 
+#ifndef GEN_CONS_OUT
+#define GEN_CONS_OUT
 
+template <typename T>
+void GenericConsoleOut(T obj, textColor col)
+{
+	std::cout << "[ Line " << __LINE__ << " ]: " << col << obj << "\033[0m\n" << std::endl;
+}
+
+#endif
 
 #define ANTIBOX_QLOG(string) std::cout << "Error at line " << __LINE__ << " in file " << __FILE__ << "> \n"; std::cout << "\033[1;31m" << string << "\033[0m\n" << std::endl;
 #define ANTIBOX_ERRLOG(string, log) std::cout << "Error at line " << __LINE__ << " in file " << __FILE__ << "> \n"; std::cout << "\033[1;31m" << string << "\033[0m\n" << std::endl;std::cout << "\033[1;31m" << log << "\033[0m\n" << std::endl;

@@ -3,6 +3,11 @@
 #define UNIFONT "c:\\Users\\Thomas Andrew\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Unifont.ttf"
 #define CASCADIA "c:\\Windows\\Fonts\\CascadiaCode.ttf"
 
+#ifndef maybe
+#error Cmon man, define "maybe".
+#endif
+
+
 using namespace antibox;
 
 class Caves : public App {
@@ -44,6 +49,8 @@ public:
 		pInv.AddItem(canteen);
 		pInv.AddItem(bandage);
 		pInv.AddItem(jar);
+
+		GenericConsoleOut<bool>(maybe, WARNING);
 	}
 
 	void Update() {
