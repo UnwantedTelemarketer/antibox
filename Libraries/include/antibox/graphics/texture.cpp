@@ -67,7 +67,7 @@ namespace antibox
 		}
 		if (mPixels && dataFormat == 0)
 		{
-			Console::Log("Texture was loaded but used an invalid texture format (wrong number of channels).", text::red);
+			Console::Log("Texture was loaded but used an invalid texture format (wrong number of channels).", text::red, __LINE__);
 		}
 
 		//if we have loaded an image correctly and we have the right channels
@@ -76,7 +76,7 @@ namespace antibox
 			glTexImage2D(GL_TEXTURE_2D, 0, dataFormat, mWidth, mHeight, 0, dataFormat, GL_UNSIGNED_BYTE, mPixels);
 
 			SetTextureFilter(mFilter);
-			Console::Log(("Loaded texture from " + mPath + "."), text::green);
+			Console::Log(("Loaded texture from " + mPath + "."), text::green, __LINE__);
 		}
 		else 
 		{
@@ -91,7 +91,7 @@ namespace antibox
 
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_FLOAT, pixels);
 			SetTextureFilter(TextureFilter::Nearest);
-			Console::Log("Unable to load " + mPath + ". Loading default checkerboard texture. ", text::red);
+			Console::Log("Unable to load " + mPath + ". Loading default checkerboard texture. ", text::red, __LINE__);
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);

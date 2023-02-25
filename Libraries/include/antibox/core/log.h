@@ -7,12 +7,12 @@ typedef const char textColor[8];
 
 namespace Console {
 	//Logs a message to the command prompt. ERROR is red, WARNING is yellow, SUCCESS is green, LOG is white.
-	void Log(std::string message, textColor type);
-	void Log(uint32_t message, textColor type);
-	void Log(bool tf, textColor type);
-	void Log(unsigned char* message, textColor type);
-	void Log(Vector2 vec, textColor type);
-	void Log(Vector2_I vec, textColor type);
+	void Log(std::string message, textColor type, int lineNum);
+	void Log(uint32_t message, textColor type, int lineNum);
+	void Log(bool tf, textColor type, int lineNum);
+	void Log(unsigned char* message, textColor type, int lineNum);
+	void Log(Vector2 vec, textColor type, int lineNum);
+	void Log(Vector2_I vec, textColor type, int lineNum);
 	//Writes a message and returns the message as a string. ERROR is red, WARNING is yellow, SUCCESS is green, LOG is white.
 	//std::string LogOut(std::string message, int type);
 }
