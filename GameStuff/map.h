@@ -6,6 +6,7 @@
 #include "inventory.h"
 #include <algorithm>
 #include <cmath>
+#include <thread>
 
 #define MAP_UP 1
 #define MAP_DOWN 2
@@ -13,8 +14,8 @@
 #define MAP_RIGHT 4
 #define CHUNK_WIDTH 30
 #define CHUNK_HEIGHT 30
-#define MAP_HEIGHT 5
-#define MAP_WIDTH 5
+#define MAP_HEIGHT 10
+#define MAP_WIDTH 10
 
 struct Chunk {
 	Vector2_I globalChunkCoord;
@@ -34,7 +35,7 @@ struct World
 
 class Map {
 public:
-	Vector2_I c_glCoords{ 2, 3 };
+	Vector2_I c_glCoords{ 5, 5 };
 	T_Chunk effectLayer; //is the original chunk with entities placed over it
 	World world; //keeps the original generated map so that tiles walked over wont be erased
 	std::vector<Vector2_I> line;
@@ -74,11 +75,9 @@ public:
 	//T_Chunk& EntityLayer() { return entityLayer; }
 
 	void MovePlayer(int x, int y, Player* p, std::vector<std::string>* actionLog) {
-		ClearEntities(*p);
 		p->coords.x = x; p->coords.y = y;
 		CheckBounds(p);
 		//if (CurrentChunk().localCoords[y][x] == 2) { p->coveredIn = 1; Math::PushBackLog(actionLog, "You are now wet."); }
-		PlaceEntities(*p);
 	}
 
 	//check if player moves to the next chunk
@@ -122,7 +121,7 @@ public:
 		else if (p->coords.y < 0) { p->coords.y = 0; }
 	}
 	//check if entity moves to next chunk
-	void CheckBounds(Entity* p) { 
+	void CheckBounds(Entity* p, Chunk* chunk) { 
 		bool changed = false;
 		int oldIndex = p->index;
 		if (p->coords.x > CHUNK_WIDTH - 1) {
@@ -154,8 +153,8 @@ public:
 			p->index = world.chunks[c_glCoords.x][c_glCoords.y - 1].entities.size() - 1;
 		}
 		if (changed) {
-			CurrentChunk().entities.erase(CurrentChunk().entities.begin() + oldIndex);
-			FixEntityIndex();
+			chunk->entities.erase(chunk->entities.begin() + oldIndex);
+			FixEntityIndex(chunk);
 		}
 	}
 
@@ -238,35 +237,33 @@ public:
 		line.clear();
 	}
 
-	void ClearEntities(Player p)
+	void ClearEntities(Chunk* chunk)
 	{
 		//go to the player and all entities and replace the original tile
-		for (int i = 0; i < CurrentChunk().entities.size(); i++)
+		for (int i = 0; i < chunk->entities.size(); i++)
 		{
-			Entity& curEn = *CurrentChunk().entities[i];
-			CurrentChunk().localCoords[curEn.coords.y][curEn.coords.x].entity = nullptr;
+			Entity& curEn = *chunk->entities[i];
+			chunk->localCoords[curEn.coords.y][curEn.coords.x].entity = nullptr;
 		}
 	}
 
-	void PlaceEntities(Player p)
+	void PlaceEntities(Chunk* chunk)
 	{
-		//place the player and all entities on top of the tiles
-		//CurrentChunk().localCoords[p.coords.y][p.coords.x] = 0;
 		int id;
-		for (int i = 0; i < CurrentChunk().entities.size(); i++)
+		for (int i = 0; i < chunk->entities.size(); i++)
 		{
-			CurrentChunk().localCoords
-				[CurrentChunk().entities[i]->coords.y]
-				[CurrentChunk().entities[i]->coords.x].entity = CurrentChunk().entities[i];
+			chunk->localCoords
+				[chunk->entities[i]->coords.y]
+			[chunk->entities[i]->coords.x].entity = chunk->entities[i];
 		}
 
 	}
 
 	//Reset the indices of the entities
-	void FixEntityIndex() {
-		for (int i = 0; i < CurrentChunk().entities.size(); i++)
+	void FixEntityIndex(Chunk* chunk) {
+		for (int i = 0; i < chunk->entities.size(); i++)
 		{
-			CurrentChunk().entities[i]->index = i;
+			chunk->entities[i]->index = i;
 		}
 	}
 

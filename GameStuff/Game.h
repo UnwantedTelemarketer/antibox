@@ -21,7 +21,8 @@ public:
 
 	void Setup(int x, int y, float tick);
 
-	void UpdateEntities();
+
+	void UpdateEntities(Vector2_I chunkCoords);
 	void UpdateTick();
 
 	void DoBehaviour(Entity* ent);
@@ -44,8 +45,10 @@ public:
 	ImVec4 GetTileColor(Vector2_I tile);
 };
 
-
-
+static void T_UpdateChunk(GameManager* gm, Vector2_I coords)
+{
+	gm->UpdateEntities(coords);
+}
 
 void GameManager::Setup(int x, int y, float tick) {
 	tickRate = tick * 1000;
@@ -106,7 +109,7 @@ void GameManager::SpawnEntity(Entity* ent) {
 }
 
 void GameManager::MovePlayer(int dir) {
-	mainMap.ClearLine();
+	//mainMap.ClearLine();
 	switch (dir) {
 	case 1:
 		mainMap.MovePlayer(mPlayer.coords.x, mPlayer.coords.y - 1, &mPlayer, &actionLog);
@@ -123,7 +126,7 @@ void GameManager::MovePlayer(int dir) {
 	default:
 		break;
 	}
-	mainMap.DrawLine({ 5,5 }, { mPlayer.coords.y, mPlayer.coords.x });
+	//mainMap.DrawLine({ 5,5 }, { mPlayer.coords.y, mPlayer.coords.x });
 	//if (mainMap.NearNPC(player)) { Math::PushBackLog(&actionLog, "Howdy!"); }
 }
 
@@ -131,6 +134,7 @@ void GameManager::UpdateTick() {
 	tickCount += antibox::Engine::Instance().deltaTime();
 	if (tickCount >= tickRate)
 	{
+		tickCount = 0;
 		mPlayer.thirst -= 0.075f;
 		mPlayer.hunger -= 0.05f;
 		if (mPlayer.thirst < 0) { mPlayer.health -= 0.5f; mPlayer.thirst = 0; }
@@ -140,31 +144,47 @@ void GameManager::UpdateTick() {
 		else { worldTime -= 0.5; }
 		if (worldTime > 7 || worldTime <= 1) { forwardTime = !forwardTime; }*/
 
-		UpdateEntities();
+		//Update surrounding chunks in separate threads for "super speed" >:)
+		/*std::vector<std::thread> threads;
+		for (int i = -1; i < 2; ++i) {
+			threads.push_back(std::thread(T_UpdateChunk, this, Vector2_I{ mainMap.c_glCoords.x + i,  mainMap.c_glCoords.y }));
+		}
+		threads.push_back(std::thread(T_UpdateChunk, this, Vector2_I{ mainMap.c_glCoords.x,  mainMap.c_glCoords.y + 1 }));
+		threads.push_back(std::thread(T_UpdateChunk, this, Vector2_I{ mainMap.c_glCoords.x,  mainMap.c_glCoords.y - 1}));
+
+		for (auto& th : threads) {
+			th.join();
+		}*/
+		T_UpdateChunk(this, Vector2_I{ mainMap.c_glCoords.x + 1,  mainMap.c_glCoords.y });
+		T_UpdateChunk(this, Vector2_I{ mainMap.c_glCoords.x - 1,  mainMap.c_glCoords.y });
+		T_UpdateChunk(this, Vector2_I{ mainMap.c_glCoords.x,  mainMap.c_glCoords.y });
+		T_UpdateChunk(this, Vector2_I{ mainMap.c_glCoords.x,  mainMap.c_glCoords.y + 1 });
+		T_UpdateChunk(this, Vector2_I{ mainMap.c_glCoords.x,  mainMap.c_glCoords.y - 1});
 	}
 }
 
-void GameManager::UpdateEntities() {
-	
-		mainMap.ClearEntities(mPlayer);
-		tickCount = 0;
-		for (int i = 0; i < mainMap.CurrentChunk().entities.size(); i++)
+void GameManager::UpdateEntities(Vector2_I chunkCoords) {
+	Chunk* usedChunk = &mainMap.world.chunks[chunkCoords.x][chunkCoords.y];
+	mainMap.ClearEntities(usedChunk);
+	for (int i = 0; i < usedChunk->entities.size(); i++)
+	{
+		if (usedChunk->entities[i]->aggressive)
 		{
-			if (mainMap.CurrentChunk().entities[i]->aggressive)
-			{
-				AttemptAttack(mainMap.CurrentChunk().entities[i]);
-			}
-
-			if (Math::RandInt(10) >= 4) { continue; }
-
-			DoBehaviour(mainMap.CurrentChunk().entities[i]);
-
-
-			mainMap.CheckBounds(mainMap.CurrentChunk().entities[i]);
-
+			AttemptAttack(usedChunk->entities[i]);
 		}
-		mainMap.PlaceEntities(mPlayer);
+
+		if (Math::RandInt(10) >= 4) { continue; }
+
+		DoBehaviour(usedChunk->entities[i]);
+
+
+		mainMap.CheckBounds(usedChunk->entities[i], usedChunk);
+
+	}
+	mainMap.PlaceEntities(usedChunk);
 }
+
+
 
 void GameManager::AttemptAttack(Entity* ent)
 {
@@ -281,3 +301,5 @@ ImVec4 GameManager::GetTileColor(Tile tile) {
 	return color;
 }
 ImVec4 GameManager::GetTileColor(Vector2_I tile) { return GameManager::GetTileColor(mainMap.CurrentChunk().localCoords[tile.x][tile.y]); }
+
+

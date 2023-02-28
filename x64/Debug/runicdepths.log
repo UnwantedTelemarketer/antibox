@@ -1,29 +1,29 @@
 ﻿  main.cpp
-C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(6,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(22,1): warning C4099: 'Vector2_I': type name first seen using 'class' now seen using 'struct'
-C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(21): message : see declaration of 'Vector2_I'
-C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(37,1): warning C4099: 'Vector2': type name first seen using 'class' now seen using 'struct'
-C:\dev\C++\runicdepths\Libraries\include\antibox\core\mathlib.h(36): message : see declaration of 'Vector2'
-C:\dev\C++\runicdepths\GameStuff\map.h(129,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\dev\C++\runicdepths\GameStuff\map.h(136,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\dev\C++\runicdepths\GameStuff\map.h(143,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\dev\C++\runicdepths\GameStuff\map.h(150,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\dev\C++\runicdepths\GameStuff\map.h(165,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\dev\C++\runicdepths\GameStuff\map.h(251,7): warning C4101: 'id': unreferenced local variable
-C:\dev\C++\runicdepths\GameStuff\game.h(105,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\dev\C++\runicdepths\GameStuff\game.h(254,27): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\GameStuff\game.h(257,29): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\GameStuff\game.h(260,27): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(43,1): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(77,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\dev\C++\runicdepths\main.cpp(171,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(172,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(178,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(185,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(186,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(187,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(192,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(247,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\dev\C++\runicdepths\main.cpp(304,60): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\dev\C++\runicdepths\main.cpp(311,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  runicdepths.vcxproj -> C:\dev\C++\runicdepths\Debug\runicdepths.exe
+C:\dev\C++\antibox\Libraries\include\antibox\core\mathlib.h(6,55): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\dev\C++\antibox\Libraries\include\antibox\core\mathlib.h(22,1): warning C4099: 'Vector2_I': type name first seen using 'class' now seen using 'struct'
+C:\dev\C++\antibox\Libraries\include\antibox\core\mathlib.h(21,8): message : see declaration of 'Vector2_I'
+C:\dev\C++\antibox\Libraries\include\antibox\core\mathlib.h(37,1): warning C4099: 'Vector2': type name first seen using 'class' now seen using 'struct'
+C:\dev\C++\antibox\Libraries\include\antibox\core\mathlib.h(36,8): message : see declaration of 'Vector2'
+C:\dev\C++\antibox\GameStuff\map.h(132,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\dev\C++\antibox\GameStuff\map.h(139,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\dev\C++\antibox\GameStuff\map.h(146,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\dev\C++\antibox\GameStuff\map.h(153,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\dev\C++\antibox\GameStuff\map.h(168,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\dev\C++\antibox\GameStuff\map.h(252,7): warning C4101: 'id': unreferenced local variable
+C:\dev\C++\antibox\GameStuff\game.h(108,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\dev\C++\antibox\GameStuff\game.h(274,27): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\GameStuff\game.h(277,29): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\GameStuff\game.h(280,27): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(44,1): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(79,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\dev\C++\antibox\main.cpp(173,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(174,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(180,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(187,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(188,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(189,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(194,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(249,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\dev\C++\antibox\main.cpp(306,60): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\dev\C++\antibox\main.cpp(313,38): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  runicdepths.vcxproj -> C:\dev\C++\antibox\Debug\runicdepths.exe

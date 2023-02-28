@@ -1,4 +1,5 @@
 #include "GameStuff/game.h"
+
 #define CURRENTWINDOW Engine::Instance().GetWindow()->glfwin()
 #define UNIFONT "c:\\Users\\Thomas Andrew\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Unifont.ttf"
 #define CASCADIA "c:\\Windows\\Fonts\\CascadiaCode.ttf"
@@ -10,7 +11,7 @@ private:
 	WindowProperties GetWindowProperties() { 
 		WindowProperties props;
 		
-		props.imguiProps = { true, true, false, UNIFONT };
+		props.imguiProps = { true, true, false, CASCADIA };
 		props.w = 1280;
 		props.h = 720;
 		props.vsync = 1;
@@ -43,11 +44,12 @@ public:
 		pInv.clothes = { 0.75, 0.45, 0.15 };
 		pInv.AddItem(canteen);
 		pInv.AddItem(bandage);
-		pInv.AddItem(jar);
 	}
 
 	void Update() {
 		game.UpdateTick();
+
+		
 		if (Input::KeyDown(KEY_UP)) {
 			if (interacting)
 			{
